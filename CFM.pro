@@ -4,19 +4,19 @@
 
 TEMPLATE = app
 TARGET = CFM
-DESTDIR = ./Build/Win32/Debug
+DESTDIR = ./Build/linux/Debug
 QT += core widgets gui
 CONFIG += debug
-DEFINES += WIN64 QT_DLL QT_WIDGETS_LIB
+DEFINES += QT_DLL QT_WIDGETS_LIB
 INCLUDEPATH += . \
     ./Include \
     ./Include/Uic \
     ./Resources \
-    ./Source/moc/Win32/Debug \
+    ./Source/moc/linux/Debug \
     ./Include/Uic \
     ./Include/CFM
 DEPENDPATH += .
-MOC_DIR += ./Source/moc/win32/debug
+MOC_DIR += ./Source/moc/linux/debug
 OBJECTS_DIR += debug
 UI_DIR += ./Include/Uic
 RCC_DIR += ./Resources
