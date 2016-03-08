@@ -1,0 +1,20 @@
+﻿#Visual Studio files
+*.opensdf
+*.vcxproj.user
+*.vcxproj.filters
+*.sdf
+*.suo
+
+#Qt Files
+*.pro.user
+Makefile
+Makefile.Debug
+Makefile.Release
+
+#Directories
+Build/*
+debug
+release
+Source/moc/
+Include/Uic/
+.vs
