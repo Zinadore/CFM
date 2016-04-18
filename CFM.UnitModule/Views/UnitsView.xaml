@@ -85,7 +85,7 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <metro:PackIconModern Grid.Row="0" Kind="BookPerspective" />
+                            <metro:PackIconModern Grid.Row="0" Kind="BookPerspective" Width="45" Height="45"/>
                             <TextBlock Grid.Row="1" Text="{Binding Code}"></TextBlock>
                         </Grid>
                     </metro:Tile>

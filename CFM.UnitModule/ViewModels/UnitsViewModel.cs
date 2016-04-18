@@ -43,9 +43,9 @@ namespace CFM.UnitModule.ViewModels
 
         private async void HandleNewUnitEvent(Unit obj)
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
-                Units = _repository.GetAll();
+                Units = await _repository.GetAllAsync();
             });
         }
 
@@ -83,9 +83,9 @@ namespace CFM.UnitModule.ViewModels
 
         public async void LoadData()
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
-                Units = _repository.GetAll();
+                Units = await _repository.GetAllAsync();
             });
         }
 

@@ -13,7 +13,7 @@ namespace CFM.Data
         public CfmDbContext()
             :base("name=cfmConnection")
         {
-                
+                Database.SetInitializer(new CreateDatabaseIfNotExists<CfmDbContext>());
         }
 
         public DbSet<Professor> Professors { get; set; }

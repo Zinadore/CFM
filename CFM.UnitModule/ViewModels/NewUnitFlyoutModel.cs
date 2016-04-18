@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CFM.Data.Models;
 using CFM.Infrastructure;
+using CFM.Infrastructure.Events;
 using CFM.Infrastructure.Repositories;
+using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace CFM.UnitModule.ViewModels
@@ -15,12 +19,62 @@ namespace CFM.UnitModule.ViewModels
     {
         private readonly IUnitRepository _unitRepository;
         private readonly IProfessorRepository _professorRepository;
+        private readonly IEventAggregator _eventAggregator;
+
+        public DelegateCommand AddProfessorCommand { get; private set; }
+        public DelegateCommand RemoveProfessorCommand { get; private set; }
+        public DelegateCommand SaveCommand { get; private set; }
 
         public NewUnitFlyoutModel(IUnitRepository unitRepository, IProfessorRepository professorRepository,
-                                    IApplicationCommands applicationCommands)
+                                    IEventAggregator eventAggregator)
         {
             _unitRepository = unitRepository;
             _professorRepository = professorRepository;
+            _eventAggregator = eventAggregator;
+            Teachers = new ObservableCollection<Professor>();
+            AddProfessorCommand = new DelegateCommand(AddProfessor);
+            RemoveProfessorCommand = new DelegateCommand(RemoveProfessor);
+            SaveCommand = new DelegateCommand(Save, CanSave).ObservesProperty(() => Code)
+                                                            .ObservesProperty(() => Title)
+                                                            .ObservesProperty(()=>Teachers);
+            _eventAggregator.GetEvent<ProfessorAddedEvent>().Subscribe((p) => LoadData());
+            _eventAggregator.GetEvent<ProfessorUpdatedEvent>().Subscribe((p) => LoadData());
+        }
+
+        private async void Save()
+        {
+            var newUnit = new Unit {Code = Code, Title = Title, Teachers = Teachers.ToList()};
+            await Task.Run(async () =>
+            {
+                await _unitRepository.AddAsync(newUnit);
+            });
+            _eventAggregator.GetEvent<UnitAddedEvent>().Publish(newUnit);
+            Code = Title = "";
+            Teachers = new ObservableCollection<Professor>(); // Need to fire the OnPropertyChanged event
+            IsOpen = false;
+        }
+
+        private bool CanSave()
+        {
+            return !string.IsNullOrWhiteSpace(Code) && !string.IsNullOrWhiteSpace(Title) && Teachers.Count > 0;
+        }
+
+        private void RemoveProfessor()
+        {
+            if (Teachers.Contains(SelectedTeacher))
+            {
+                Teachers.Remove(SelectedTeacher);
+                SaveCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private void AddProfessor()
+        {
+            if (!Teachers.Contains(SelectedProfessor))
+            {
+                Teachers.Add(SelectedProfessor);
+                SaveCommand.RaiseCanExecuteChanged();
+            }
         }
 
         public async void LoadData()
@@ -32,6 +86,14 @@ namespace CFM.UnitModule.ViewModels
         }
 
         #region Properties
+        private bool _isOpen;
+
+        public bool IsOpen
+        {
+            get { return _isOpen; }
+            set { SetProperty(ref _isOpen, value); }
+        }
+
 
         private string _code;
 
@@ -49,6 +111,22 @@ namespace CFM.UnitModule.ViewModels
             set { SetProperty(ref _title, value); }
         }
 
+        private Professor _selectedProfessor;
+
+        public Professor SelectedProfessor
+        {
+            get { return _selectedProfessor; }
+            set { SetProperty(ref _selectedProfessor, value); }
+        }
+
+        private Professor _selectedTeacher;
+
+        public Professor SelectedTeacher
+        {
+            get { return _selectedTeacher; }
+            set { SetProperty(ref _selectedTeacher, value); }
+        }
+
         private ICollection<Professor> _professors;
 
         public ICollection<Professor> Professors
@@ -57,9 +135,9 @@ namespace CFM.UnitModule.ViewModels
             set { SetProperty(ref _professors, value); }
         }
 
-        private ICollection<Professor> _teachers;
+        private ObservableCollection<Professor> _teachers;
 
-        public ICollection<Professor> Teachers
+        public ObservableCollection<Professor> Teachers
         {
             get { return _teachers; }
             set { SetProperty(ref _teachers, value); }

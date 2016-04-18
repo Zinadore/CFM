@@ -55,7 +55,14 @@ namespace CFM.ProfessorModule.ViewModels
         public bool EditMode
         {
             get { return _editMode; }
-            set { SetProperty(ref _editMode, value); }
+            set
+            {
+                SetProperty(ref _editMode, value);
+                if (!value)
+                {
+                    UpdateCommand.Execute();
+                }
+            }
         }
 
         private string _firstName;

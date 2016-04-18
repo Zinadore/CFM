@@ -9,6 +9,7 @@
               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
               xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
               Width="300"
+              IsOpen="{Binding IsOpen}"
               mc:Ignorable="d"
               d:DesignWidth="500">
     <i:Interaction.Triggers>
@@ -53,13 +54,14 @@
             </Grid.RowDefinitions>
             <!--List Headers-->
             <TextBlock Grid.Row="0" Grid.Column="0">All Professors</TextBlock>
-            <TextBlock Grid.Row="0" Grid.Column="2">Professors in the Unit</TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="2">Teaching this Unit</TextBlock>
             <!--Existing Professors-->
             <ListView Grid.Row="1"
                       Grid.Column="0"
                       Grid.RowSpan="3"
                       HorizontalAlignment="Stretch"
-                      ItemsSource="{Binding Professors}">
+                      ItemsSource="{Binding Professors}"
+                      SelectedItem="{Binding SelectedProfessor}">
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="{x:Type model:Professor}">
                         <TextBlock Text="{Binding FullName}"></TextBlock>
@@ -71,7 +73,8 @@
                       Grid.Column="2"
                       Grid.RowSpan="3"
                       HorizontalAlignment="Stretch"
-                      ItemsSource="{Binding Teachers}">
+                      ItemsSource="{Binding Teachers}"
+                      SelectedItem="{Binding SelectedTeacher}">
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="{x:Type model:Professor}">
                         <TextBlock Text="{Binding FullName}"></TextBlock>
@@ -80,8 +83,8 @@
             </ListView>
             <StackPanel Grid.Row="2"
                         Grid.Column="1">
-                <Button Content="&gt;&gt;"></Button>
-                <Button Content="&lt;&lt;"></Button>
+                <Button Content="&gt;&gt;" Command="{Binding AddProfessorCommand}"></Button>
+                <Button Content="&lt;&lt;" Command="{Binding RemoveProfessorCommand}"></Button>
             </StackPanel>
         </Grid>
         
