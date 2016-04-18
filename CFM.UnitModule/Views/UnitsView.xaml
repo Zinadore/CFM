@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="CFM.UnitModule.Views.UnitsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CFM.UnitModule.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:inf="clr-namespace:CFM.Infrastructure;assembly=CFM.Infrastructure"
+             xmlns:infConstants="clr-namespace:CFM.Infrastructure.Constants;assembly=CFM.Infrastructure"
+             xmlns:model="clr-namespace:CFM.Data.Models;assembly=CFM.Data"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <ei:CallMethodAction TargetObject="{Binding}" MethodName="LoadData"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock FontWeight="Bold" 
+                       FontSize="24"
+                       Foreground="{DynamicResource AccentColorBrush}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left">Units</TextBlock>
+            <Button Width="65"
+			        Height="65"
+                    Grid.Column="2"
+			        Style="{DynamicResource MetroCircleButtonStyle}"
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Left"
+                    Command="{x:Static inf:ApplicationCommands.ShowFlyoutCommand}"
+                    CommandParameter="{x:Static infConstants:FlyoutNames.NewUnitFlyout}"
+                    ToolTip="Add New">
+                <metro:PackIconModern Kind="Add" />
+            </Button>
+            <TextBox Grid.Column="1"
+                     VerticalAlignment="Center"
+                     Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged}"
+                     metro:TextBoxHelper.ClearTextButton="True"
+                     metro:TextBoxHelper.UseFloatingWatermark="True"
+                     metro:TextBoxHelper.Watermark="Search...">
+                <TextBox.Style>
+                    <Style BasedOn="{StaticResource SearchMetroTextBox}" TargetType="{x:Type TextBox}">
+                        <Style.Triggers>
+                            <Trigger Property="metro:TextBoxHelper.HasText" Value="True">
+                                <Setter Property="metro:TextBoxHelper.ButtonContent" Value="r" />
+                                <Setter Property="metro:TextBoxHelper.ButtonContentTemplate" Value="{x:Null}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+        </Grid>
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding FilteredCollection}">
+            <ItemsControl.Template>
+                <ControlTemplate>
+                    <WrapPanel  Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
+                                    FlowDirection="LeftToRight" IsItemsHost="true">
+
+                    </WrapPanel>
+                </ControlTemplate>
+            </ItemsControl.Template>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type model:Unit}">
+                    <metro:Tile Title="{Binding Title}"
+                                Background="{DynamicResource AccentColorBrush2}"
+                                Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                            AncestorType={x:Type UserControl}}, Path=DataContext.UnitDetailsCommand}"
+                                CommandParameter="{Binding Id}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <metro:PackIconModern Grid.Row="0" Kind="BookPerspective" />
+                            <TextBlock Grid.Row="1" Text="{Binding Code}"></TextBlock>
+                        </Grid>
+                    </metro:Tile>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</UserControl>
