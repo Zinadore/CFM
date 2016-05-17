@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Bulldog.FlyoutManager;
 using CFM.Data;
 using CFM.Infrastructure;
 using CFM.Infrastructure.Constants;
@@ -13,6 +14,7 @@ using CFM.Infrastructure.RegionAdapters;
 using CFM.Infrastructure.Repositories;
 using CFM.Infrastructure.Services;
 using CFM.Shell.Views;
+using MahApps.Metro.Controls;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Unity;
 using Microsoft.Practices.Unity;
@@ -33,13 +35,6 @@ namespace CFM.Shell
         {
             base.InitializeShell();
 
-            var regionManager = this.Container.Resolve<IRegionManager>();
-            if (regionManager != null)
-            {
-                // Add flyouts
-                regionManager.RegisterViewWithRegion(RegionNames.FlyoutRegion, typeof(ShellSettingsFlyout));
-            }
-
             // Register services
             this.RegisterServices();
 
@@ -55,8 +50,7 @@ namespace CFM.Shell
             Container.RegisterType<IUnitRepository, UnitRepository>(new ContainerControlledLifetimeManager());
             // Application commands
             Container.RegisterType<IApplicationCommands, ApplicationCommandsProxy>(new ContainerControlledLifetimeManager());
-            // Flyout service
-            Container.RegisterInstance<IFlyoutService>(Container.Resolve<FlyoutService>());
+           
         }
 
         protected override void ConfigureModuleCatalog()
@@ -71,11 +65,16 @@ namespace CFM.Shell
         {
             var mappings = base.ConfigureRegionAdapterMappings();
             mappings.RegisterMapping(typeof(StackPanel), ServiceLocator.Current.GetInstance<StackPanelRegionAdapter>());
+            mappings.RegisterMapping(typeof(FlyoutsControl), Container.Resolve<FlyoutsControlRegionAdapter>());
             return mappings;
         }
 
         private void RegisterServices()
         {
+            // Flyout services
+            Container.RegisterType<IFlyoutManager, FlyoutManager>(new ContainerControlledLifetimeManager());
+            Container.RegisterInstance<IFlyoutService>(Container.Resolve<FlyoutService>());
+            // Dialog services
             Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
         }
     }

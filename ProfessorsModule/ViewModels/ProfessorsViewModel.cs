@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using CFM.Data.Models;
 using CFM.Infrastructure;
+using CFM.Infrastructure.Base;
 using CFM.Infrastructure.Events;
+using CFM.Infrastructure.Interfaces;
 using CFM.Infrastructure.Repositories;
 using CFM.ProfessorModule.Views;
 using Prism.Commands;
@@ -16,10 +18,9 @@ using Prism.Regions;
 
 namespace CFM.ProfessorModule.ViewModels
 {
-    public class ProfessorsViewModel: BindableBase
+    public class ProfessorsViewModel: SearchableBindableBase<Professor>
     {
         private readonly IProfessorRepository _repository;
-        private readonly IEventAggregator _eventAggregator;
         private readonly IApplicationCommands _applicationCommands;
 
         public DelegateCommand<int?> ProfessorDetailsCommand { get; private set; } 
@@ -28,7 +29,6 @@ namespace CFM.ProfessorModule.ViewModels
                                     IApplicationCommands applicationCommands)
         {
             _repository = repository;
-            _eventAggregator = eventAggregator;
             _applicationCommands = applicationCommands;
             eventAggregator.GetEvent<ProfessorAddedEvent>().Subscribe(HandleNewProffesorEvent);
 
@@ -51,28 +51,8 @@ namespace CFM.ProfessorModule.ViewModels
             });
         }
 
-        private string _filter;
-
-        public string Filter
-        {
-            get { return _filter; }
-            set
-            {
-                SetProperty(ref _filter, value); 
-                ApplyFilter(_filter);
-            }
-        }
-
-        private ICollection<Professor> _filteredCollection;
-
-        public ICollection<Professor> FilteredCollection
-        {
-            get { return _filteredCollection; }
-            set { SetProperty(ref _filteredCollection, value); }
-        }
 
         private ICollection<Professor> _professors;
-
         public ICollection<Professor> Professors
         {
             get { return _professors; }
@@ -90,9 +70,9 @@ namespace CFM.ProfessorModule.ViewModels
                 Professors =  _repository.GetAll();
             });
         }
-        
 
-        private void ApplyFilter(string filter)
+
+        protected override void ApplyFilter(string filter)
         {
             FilteredCollection = string.IsNullOrWhiteSpace(filter) ? Professors : Professors.Where(p => p.FullName.ToLower().Contains(filter.ToLower())).ToList();
         }

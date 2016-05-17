@@ -1,4 +1,5 @@
-﻿using CFM.Infrastructure.Base;
+﻿using Bulldog.FlyoutManager;
+using CFM.Infrastructure.Base;
 using CFM.Infrastructure.Constants;
 using CFM.ProfessorModule.ViewModels;
 using CFM.ProfessorModule.Views;
@@ -11,13 +12,21 @@ namespace CFM.ProfessorModule
 {
     public class ProfessorModule: PrismModuleBase
     {
-        public ProfessorModule(IRegionManager regionManager, IUnityContainer unityContainer) 
+        private readonly IFlyoutManager _flyoutManager;
+
+        public ProfessorModule(IRegionManager regionManager, IUnityContainer unityContainer, IFlyoutManager flyoutManager) 
             : base(regionManager, unityContainer)
         {
+            _flyoutManager = flyoutManager;
             regionManager.RegisterViewWithRegion(RegionNames.NavigationRegion, typeof(ProfessorButton));
-            regionManager.RegisterViewWithRegion(RegionNames.FlyoutRegion, typeof(NewProfessorFlyout));
             RegisterViews();
             RegisterViewModels();
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            _flyoutManager.RegisterFlyout<NewProfessorFlyoutView>(FlyoutNames.NewProfessorFlyout, RegionNames.FlyoutRegion);
         }
 
         protected override void RegisterViews()
@@ -30,9 +39,6 @@ namespace CFM.ProfessorModule
         protected override void RegisterViewModels()
         {
             base.RegisterViewModels();
-            //UnityContainer.RegisterType<ProfessorsViewModel>();
-            UnityContainer.RegisterType<NewProfessorFlyoutModel>();
-            //UnityContainer.RegisterType<ProfessorDetailsViewModel>();
         }
     }
 }

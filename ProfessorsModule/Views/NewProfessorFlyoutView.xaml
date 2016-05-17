@@ -1,4 +1,4 @@
-﻿<metro:Flyout x:Class="CFM.ProfessorModule.Views.NewProfessorFlyout"
+﻿<UserControl x:Class="CFM.ProfessorModule.Views.NewProfessorFlyoutView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,11 +8,8 @@
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
-             Header="New Professor"
-             Position="Left"
-             Theme="Dark"
-              IsOpen="{Binding IsOpen}"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             Width="300">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -37,5 +34,5 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Right">Save</Button>
     </Grid>
-</metro:Flyout>
+</UserControl>
 

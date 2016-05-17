@@ -17,20 +17,18 @@ using CFM.Infrastructure.Interfaces;
 using CFM.UnitModule.ViewModels;
 using MahApps.Metro.Controls;
 using Microsoft.Practices.Unity;
+using Prism.Regions;
 
 namespace CFM.UnitModule.Views
 {
     /// <summary>
     /// Interaction logic for NewUnitFlyout.xaml
     /// </summary>
-    public partial class NewUnitFlyout : Flyout, IFlyoutView
+    public partial class NewUnitFlyoutView
     {
-        public NewUnitFlyout(IUnityContainer container)
+        public NewUnitFlyoutView()
         {
             InitializeComponent();
-            this.DataContext = container.Resolve<NewUnitFlyoutModel>();
         }
-
-        public string FlyoutName => FlyoutNames.NewUnitFlyout;
     }
 }

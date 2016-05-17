@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Bulldog.FlyoutManager;
 using CFM.Data.Models;
 using CFM.Infrastructure;
 using CFM.Infrastructure.Constants;
@@ -27,6 +28,7 @@ namespace CFM.ProfessorModule.ViewModels
         private readonly IApplicationCommands _applicationCommands;
         private readonly IEventAggregator _eventAggregator;
         private readonly IDialogService _dialogService;
+        private readonly FlyoutManager _flyoutManager;
 
         public DelegateCommand UpdateCommand { get; private set; }
         public DelegateCommand DeleteCommand { get; private set; } 

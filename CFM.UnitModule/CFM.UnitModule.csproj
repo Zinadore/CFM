@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bulldog.FlyoutManager, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Bulldog.FlyoutManager.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.3.0.132, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.3.0-ALPHA132\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
@@ -102,10 +106,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="UnitModule.cs" />
-    <Compile Include="ViewModels\NewUnitFlyoutModel.cs" />
+    <Compile Include="ViewModels\NewUnitFlyoutViewModel.cs" />
     <Compile Include="ViewModels\UnitsViewModel.cs" />
-    <Compile Include="Views\NewUnitFlyout.xaml.cs">
-      <DependentUpon>NewUnitFlyout.xaml</DependentUpon>
+    <Compile Include="Views\NewUnitFlyoutView.xaml.cs">
+      <DependentUpon>NewUnitFlyoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UnitsView.xaml.cs">
       <DependentUpon>UnitsView.xaml</DependentUpon>
@@ -127,7 +131,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewUnitFlyout.xaml">
+    <Page Include="Views\NewUnitFlyoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

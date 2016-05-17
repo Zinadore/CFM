@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Bulldog.FlyoutManager;
 using CFM.Infrastructure.Constants;
 using CFM.Infrastructure.Interfaces;
 using MahApps.Metro.Controls;
@@ -14,31 +15,19 @@ namespace CFM.Infrastructure.Services
 {
     public class FlyoutService: IFlyoutService
     {
-        IRegionManager _regionManager;
-
+        private readonly IFlyoutManager _flyoutManager;
         public ICommand ShowFlyoutCommand { get; private set; }
 
-        public FlyoutService(IRegionManager regionManager, IApplicationCommands applicationCommands)
+        public FlyoutService(IApplicationCommands applicationCommands, IFlyoutManager flyoutManager)
         {
-            _regionManager = regionManager;
-
+            _flyoutManager = flyoutManager;
             ShowFlyoutCommand = new DelegateCommand<string>(ShowFlyout, CanShowFlyout);
             applicationCommands.ShowFlyoutCommand.RegisterCommand(ShowFlyoutCommand);
         }
 
         public void ShowFlyout(string flyoutName)
         {
-            var region = _regionManager.Regions[RegionNames.FlyoutRegion];
-
-            if (region != null)
-            {
-                var flyout = region.Views.Where(v => v is IFlyoutView && ((IFlyoutView)v).FlyoutName.Equals(flyoutName)).FirstOrDefault() as Flyout;
-
-                if (flyout != null)
-                {
-                    flyout.IsOpen = !flyout.IsOpen;
-                }
-            }
+            _flyoutManager.OpenFlyout(flyoutName);
         }
 
         public bool CanShowFlyout(string flyoutName)

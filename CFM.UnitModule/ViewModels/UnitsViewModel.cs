@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CFM.Data.Models;
 using CFM.Infrastructure;
+using CFM.Infrastructure.Base;
 using CFM.Infrastructure.Events;
 using CFM.Infrastructure.Repositories;
 using Prism.Commands;
@@ -14,7 +15,7 @@ using Prism.Regions;
 
 namespace CFM.UnitModule.ViewModels
 {
-    public class UnitsViewModel:BindableBase
+    public class UnitsViewModel: SearchableBindableBase<Unit>
     {
         private readonly IUnitRepository _repository;
         private readonly IEventAggregator _eventAggregator;
@@ -49,28 +50,7 @@ namespace CFM.UnitModule.ViewModels
             });
         }
 
-        private string _filter;
-
-        public string Filter
-        {
-            get { return _filter; }
-            set
-            {
-                SetProperty(ref _filter, value);
-                ApplyFilter(_filter);
-            }
-        }
-
-        private ICollection<Unit> _filteredCollection;
-
-        public ICollection<Unit> FilteredCollection
-        {
-            get { return _filteredCollection; }
-            set { SetProperty(ref _filteredCollection, value); }
-        }
-
         private ICollection<Unit> _units;
-
         public ICollection<Unit> Units
         {
             get { return _units; }
@@ -90,7 +70,7 @@ namespace CFM.UnitModule.ViewModels
         }
 
 
-        private void ApplyFilter(string filter)
+        protected override void ApplyFilter(string filter)
         {
             FilteredCollection = string.IsNullOrWhiteSpace(filter) ? Units : Units.Where((u) =>
                 u.Title.ToLower().Contains(filter.ToLower()) || u.Code.ToLower().Contains(filter.ToLower())

@@ -8,12 +8,13 @@
                     xmlns:infConstants="clr-namespace:CFM.Infrastructure.Constants;assembly=CFM.Infrastructure"
                     xmlns:prism="http://prismlibrary.com/"
                     xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:bulldog="clr-namespace:Bulldog.FlyoutManager;assembly=Bulldog.FlyoutManager"
                     mc:Ignorable="d"
                     prism:ViewModelLocator.AutoWireViewModel="True"
                     GlowBrush="{DynamicResource AccentColorBrush}"
                     Title="CITY's Feedback Manager" Height="576" Width="1024">
     <metro:MetroWindow.Flyouts>
-        <metro:FlyoutsControl x:Name="FlyoutsControlRegion" />
+        <bulldog:FlyoutContainer prism:RegionManager.RegionName="{x:Static infConstants:RegionNames.FlyoutRegion}"/>
     </metro:MetroWindow.Flyouts>
     <metro:MetroContentControl>
         <Grid>

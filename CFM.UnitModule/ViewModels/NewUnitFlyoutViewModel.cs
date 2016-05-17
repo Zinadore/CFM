@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bulldog.FlyoutManager;
 using CFM.Data.Models;
 using CFM.Infrastructure;
 using CFM.Infrastructure.Events;
@@ -15,7 +16,7 @@ using Prism.Mvvm;
 
 namespace CFM.UnitModule.ViewModels
 {
-    public class NewUnitFlyoutModel: BindableBase
+    public class NewUnitFlyoutViewModel: FlyoutBase
     {
         private readonly IUnitRepository _unitRepository;
         private readonly IProfessorRepository _professorRepository;
@@ -25,7 +26,7 @@ namespace CFM.UnitModule.ViewModels
         public DelegateCommand RemoveProfessorCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
 
-        public NewUnitFlyoutModel(IUnitRepository unitRepository, IProfessorRepository professorRepository,
+        public NewUnitFlyoutViewModel(IUnitRepository unitRepository, IProfessorRepository professorRepository,
                                     IEventAggregator eventAggregator)
         {
             _unitRepository = unitRepository;
@@ -37,8 +38,8 @@ namespace CFM.UnitModule.ViewModels
             SaveCommand = new DelegateCommand(Save, CanSave).ObservesProperty(() => Code)
                                                             .ObservesProperty(() => Title)
                                                             .ObservesProperty(()=>Teachers);
-            _eventAggregator.GetEvent<ProfessorAddedEvent>().Subscribe((p) => LoadData());
-            _eventAggregator.GetEvent<ProfessorUpdatedEvent>().Subscribe((p) => LoadData());
+            //_eventAggregator.GetEvent<ProfessorAddedEvent>().Subscribe((p) => LoadData());
+            //_eventAggregator.GetEvent<ProfessorUpdatedEvent>().Subscribe((p) => LoadData());
         }
 
         private async void Save()
@@ -85,16 +86,13 @@ namespace CFM.UnitModule.ViewModels
             });
         }
 
-        #region Properties
-        private bool _isOpen;
-
-        public bool IsOpen
+        protected override void OnOpening(FlyoutParameters flyoutParameters)
         {
-            get { return _isOpen; }
-            set { SetProperty(ref _isOpen, value); }
+            base.OnOpening(flyoutParameters);
+            LoadData();
         }
 
-
+        #region Properties
         private string _code;
 
         public string Code

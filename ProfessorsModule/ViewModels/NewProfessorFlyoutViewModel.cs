@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Bulldog.FlyoutManager;
 using CFM.Data.Models;
 using CFM.Infrastructure.Events;
 using CFM.Infrastructure.Repositories;
@@ -15,7 +16,7 @@ using Prism.Regions;
 
 namespace CFM.ProfessorModule.ViewModels
 {
-    public class NewProfessorFlyoutModel: BindableBase
+    public class NewProfessorFlyoutViewModel: FlyoutBase
     {
         private readonly IUnityContainer _unityContainer;
         private readonly IProfessorRepository _repository;
@@ -23,13 +24,15 @@ namespace CFM.ProfessorModule.ViewModels
 
         public DelegateCommand SaveCommand { get; private set; }
 
-        public NewProfessorFlyoutModel(IUnityContainer unityContainer, IProfessorRepository repository, 
+        public NewProfessorFlyoutViewModel(IUnityContainer unityContainer, IProfessorRepository repository, 
                                         IEventAggregator eventAggregator)
         {
             _unityContainer = unityContainer;
             _repository = repository;
             _eventAggregator = eventAggregator;
             SaveCommand = new DelegateCommand(SaveProfessor, CanSaveProfessor);
+            Theme = FlyoutTheme.Dark;
+            Position = FlyoutPosition.Left;
         }
         private string _firstName;
 
@@ -54,14 +57,6 @@ namespace CFM.ProfessorModule.ViewModels
                 SaveCommand.RaiseCanExecuteChanged();
             }
         }
-
-        private bool _isOpen;
-
-        public bool IsOpen
-        {
-            get { return _isOpen; }
-            set { SetProperty(ref _isOpen, value); }
-        }
         
         private async void SaveProfessor()
         {
@@ -72,13 +67,24 @@ namespace CFM.ProfessorModule.ViewModels
             }
             );
             _eventAggregator.GetEvent<ProfessorAddedEvent>().Publish(newProf);
-            FirstName = LastName = "";
-            IsOpen = false;
+            Close();
         }
 
         private bool CanSaveProfessor()
         {
             return !string.IsNullOrWhiteSpace(FirstName) && !string.IsNullOrWhiteSpace(LastName);
+        }
+
+        protected override void OnOpening(FlyoutParameters flyoutParameters)
+        {
+            base.OnOpening(flyoutParameters);
+            FirstName = LastName = "";
+        }
+
+        protected override void OnClosing(FlyoutParameters flyoutParameters)
+        {
+            base.OnClosing(flyoutParameters);
+            FirstName = LastName = "";
         }
     }
 }

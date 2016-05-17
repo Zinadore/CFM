@@ -1,4 +1,4 @@
-﻿<metro:Flyout x:Class="CFM.UnitModule.Views.NewUnitFlyout"
+﻿<UserControl x:Class="CFM.UnitModule.Views.NewUnitFlyoutView"
               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,15 +8,16 @@
               xmlns:local="clr-namespace:CFM.UnitModule.Views"
               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
               xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+              xmlns:prism="http://prismlibrary.com/"
+              prism:ViewModelLocator.AutoWireViewModel="True"
               Width="300"
-              IsOpen="{Binding IsOpen}"
               mc:Ignorable="d"
               d:DesignWidth="500">
-    <i:Interaction.Triggers>
+    <!--<i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <ei:CallMethodAction TargetObject="{Binding}" MethodName="LoadData"/>
         </i:EventTrigger>
-    </i:Interaction.Triggers>
+    </i:Interaction.Triggers>-->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -97,4 +98,4 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Right">Save</Button>
     </Grid>
-</metro:Flyout>
+</UserControl>

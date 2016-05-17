@@ -13,7 +13,7 @@ namespace CFM.Data
         public CfmDbContext()
             :base("name=cfmConnection")
         {
-                Database.SetInitializer(new CreateDatabaseIfNotExists<CfmDbContext>());
+                Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CfmDbContext>());
         }
 
         public DbSet<Professor> Professors { get; set; }
@@ -24,7 +24,8 @@ namespace CFM.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Unit>()
-                .HasMany(u => u.Teachers);    
+                .HasMany(u => u.Teachers)
+                .WithMany();    
         }
     } 
 }
