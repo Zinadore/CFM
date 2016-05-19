@@ -8,6 +8,7 @@ using Bulldog.FlyoutManager;
 using CFM.Data.Models;
 using CFM.Infrastructure.Events;
 using CFM.Infrastructure.Repositories;
+using Mehdime.Entity;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -18,17 +19,17 @@ namespace CFM.ProfessorModule.ViewModels
 {
     public class NewProfessorFlyoutViewModel: FlyoutBase
     {
-        private readonly IUnityContainer _unityContainer;
         private readonly IProfessorRepository _repository;
+        private readonly IDbContextScopeFactory _scopeFactory;
         private readonly IEventAggregator _eventAggregator;
 
         public DelegateCommand SaveCommand { get; private set; }
 
-        public NewProfessorFlyoutViewModel(IUnityContainer unityContainer, IProfessorRepository repository, 
+        public NewProfessorFlyoutViewModel(IProfessorRepository repository, IDbContextScopeFactory scopeFactory,
                                         IEventAggregator eventAggregator)
         {
-            _unityContainer = unityContainer;
             _repository = repository;
+            _scopeFactory = scopeFactory;
             _eventAggregator = eventAggregator;
             SaveCommand = new DelegateCommand(SaveProfessor, CanSaveProfessor);
             Theme = FlyoutTheme.Dark;
@@ -61,12 +62,12 @@ namespace CFM.ProfessorModule.ViewModels
         private async void SaveProfessor()
         {
             var newProf = new Professor { FirstName = FirstName, LastName = LastName};
-            await Task.Run(() =>
+            using (var dbc = _scopeFactory.Create())
             {
                 _repository.Add(newProf);
+                await dbc.SaveChangesAsync();
             }
-            );
-            _eventAggregator.GetEvent<ProfessorAddedEvent>().Publish(newProf);
+                _eventAggregator.GetEvent<ProfessorAddedEvent>().Publish(newProf);
             Close();
         }
 

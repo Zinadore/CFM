@@ -15,6 +15,7 @@ using CFM.Infrastructure.Repositories;
 using CFM.Infrastructure.Services;
 using CFM.Shell.Views;
 using MahApps.Metro.Controls;
+using Mehdime.Entity;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Unity;
 using Microsoft.Practices.Unity;
@@ -44,8 +45,12 @@ namespace CFM.Shell
         protected override void ConfigureContainer()
         {
             base.ConfigureContainer();
+            //AmbientDbContext
+            //Container.RegisterType<IDbContextFactory, DbContextF
+            Container.RegisterType<IDbContextScopeFactory, DbContextScopeFactory>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
+            Container.RegisterType<IAmbientDbContextLocator, AmbientDbContextLocator>(new ContainerControlledLifetimeManager());
             //Repositories
-            Container.RegisterType<CfmDbContext>(new ContainerControlledLifetimeManager());
+            //Container.RegisterType<CfmDbContext>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IProfessorRepository, ProfessorRepository>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IUnitRepository, UnitRepository>(new ContainerControlledLifetimeManager());
             // Application commands

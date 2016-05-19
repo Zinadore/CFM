@@ -10,6 +10,7 @@ using CFM.Data.Models;
 using CFM.Infrastructure;
 using CFM.Infrastructure.Events;
 using CFM.Infrastructure.Repositories;
+using Mehdime.Entity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -21,17 +22,19 @@ namespace CFM.UnitModule.ViewModels
         private readonly IUnitRepository _unitRepository;
         private readonly IProfessorRepository _professorRepository;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IDbContextScopeFactory _scopeFactory;
 
         public DelegateCommand AddProfessorCommand { get; private set; }
         public DelegateCommand RemoveProfessorCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
 
         public NewUnitFlyoutViewModel(IUnitRepository unitRepository, IProfessorRepository professorRepository,
-                                    IEventAggregator eventAggregator)
+                                    IEventAggregator eventAggregator, IDbContextScopeFactory scopeFactory)
         {
             _unitRepository = unitRepository;
             _professorRepository = professorRepository;
             _eventAggregator = eventAggregator;
+            _scopeFactory = scopeFactory;
             Teachers = new ObservableCollection<Professor>();
             AddProfessorCommand = new DelegateCommand(AddProfessor);
             RemoveProfessorCommand = new DelegateCommand(RemoveProfessor);
@@ -45,10 +48,11 @@ namespace CFM.UnitModule.ViewModels
         private async void Save()
         {
             var newUnit = new Unit {Code = Code, Title = Title, Teachers = Teachers.ToList()};
-            await Task.Run(async () =>
+            using (var dbc = _scopeFactory.Create())
             {
-                await _unitRepository.AddAsync(newUnit);
-            });
+                _unitRepository.Add(newUnit);
+                await dbc.SaveChangesAsync();
+            } 
             _eventAggregator.GetEvent<UnitAddedEvent>().Publish(newUnit);
             Code = Title = "";
             Teachers = new ObservableCollection<Professor>(); // Need to fire the OnPropertyChanged event
@@ -62,7 +66,7 @@ namespace CFM.UnitModule.ViewModels
 
         private void RemoveProfessor()
         {
-            if (Teachers.Contains(SelectedTeacher))
+            if (Teachers.Contains(SelectedTeacher) && SelectedTeacher != null)
             {
                 Teachers.Remove(SelectedTeacher);
                 SaveCommand.RaiseCanExecuteChanged();
@@ -71,7 +75,7 @@ namespace CFM.UnitModule.ViewModels
 
         private void AddProfessor()
         {
-            if (!Teachers.Contains(SelectedProfessor))
+            if (!Teachers.Contains(SelectedProfessor) && SelectedProfessor != null)
             {
                 Teachers.Add(SelectedProfessor);
                 SaveCommand.RaiseCanExecuteChanged();
@@ -80,16 +84,17 @@ namespace CFM.UnitModule.ViewModels
 
         public async void LoadData()
         {
-            await Task.Run(() =>
+            using (var dbc = _scopeFactory.CreateReadOnly())
             {
-                Professors = _professorRepository.GetAll();
-            });
+                Professors = await _professorRepository.GetAllAsync();
+            }
         }
 
         protected override void OnOpening(FlyoutParameters flyoutParameters)
         {
             base.OnOpening(flyoutParameters);
             LoadData();
+            SelectedProfessor = SelectedTeacher = null;
         }
 
         #region Properties

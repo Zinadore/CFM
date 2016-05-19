@@ -8,13 +8,14 @@ using CFM.Data;
 using CFM.Data.Models;
 using CFM.Infrastructure.Base;
 using CFM.Infrastructure.Interfaces;
+using Mehdime.Entity;
 
 namespace CFM.Infrastructure.Repositories
 {
     public class ProfessorRepository: BaseService<Professor>, IProfessorRepository
     {
-        public ProfessorRepository(CfmDbContext context)
-            : base(context)
+        public ProfessorRepository(IAmbientDbContextLocator contextLocator)
+            : base(contextLocator)
         {
                 
         }

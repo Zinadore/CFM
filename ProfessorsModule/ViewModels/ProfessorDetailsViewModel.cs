@@ -14,6 +14,7 @@ using CFM.Infrastructure.Interfaces;
 using CFM.Infrastructure.Repositories;
 using CFM.ProfessorModule.Views;
 using MahApps.Metro.Controls.Dialogs;
+using Mehdime.Entity;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -28,18 +29,20 @@ namespace CFM.ProfessorModule.ViewModels
         private readonly IApplicationCommands _applicationCommands;
         private readonly IEventAggregator _eventAggregator;
         private readonly IDialogService _dialogService;
-        private readonly FlyoutManager _flyoutManager;
+        private readonly IDbContextScopeFactory _scopeFactory;
+        //private readonly FlyoutManager _flyoutManager;
 
         public DelegateCommand UpdateCommand { get; private set; }
         public DelegateCommand DeleteCommand { get; private set; } 
 
         public ProfessorDetailsViewModel(IProfessorRepository repository, IApplicationCommands applicationCommands
-            , IEventAggregator eventAggregator, IDialogService dialogService)
+            , IEventAggregator eventAggregator, IDialogService dialogService, IDbContextScopeFactory scopeFactory)
         {
             _repository = repository;
             _applicationCommands = applicationCommands;
             _eventAggregator = eventAggregator;
             _dialogService = dialogService;
+            _scopeFactory = scopeFactory;
             UpdateCommand = new DelegateCommand(Update, CanUpdate);
             DeleteCommand = new DelegateCommand(Delete);
         }
@@ -62,7 +65,7 @@ namespace CFM.ProfessorModule.ViewModels
                 SetProperty(ref _editMode, value);
                 if (!value)
                 {
-                    UpdateCommand.Execute();
+                   UpdateCommand.Execute();
                 }
             }
         }
@@ -101,16 +104,17 @@ namespace CFM.ProfessorModule.ViewModels
             }
             else
             {
-                await Task.Run(() =>
+                using (var dbc = _scopeFactory.CreateReadOnly())
                 {
                     var profId = Convert.ToInt32(id);
-                    Professor = _repository.Get(profId);
-                });
-                if (Professor == null)
-                {
-                    _applicationCommands.NavigateCommand.Execute(typeof(ProfessorsView));
-                    return;
+                    Professor = await _repository.GetAsync(profId);
+                    if (Professor == null)
+                    {
+                        _applicationCommands.NavigateCommand.Execute(typeof(ProfessorsView));
+                        return;
+                    }
                 }
+                    
                 FirstName = Professor.FirstName;
                 LastName = Professor.LastName;
             }
@@ -120,12 +124,13 @@ namespace CFM.ProfessorModule.ViewModels
         {
             Professor.FirstName = FirstName;
             Professor.LastName = LastName;
-            await Task.Run(() =>
+            using (var dbc = _scopeFactory.Create())
             {
                 _repository.Update(Professor, Professor.Id);
-            });
-            _eventAggregator.GetEvent<ProfessorUpdatedEvent>().Publish(Professor);
-            EditMode = false;
+                await dbc.SaveChangesAsync();
+            }
+            //_eventAggregator.GetEvent<ProfessorUpdatedEvent>().Publish(Professor);
+            //EditMode = false;
         }
 
         private bool CanUpdate()
@@ -146,11 +151,12 @@ namespace CFM.ProfessorModule.ViewModels
             var controler = await _dialogService.ShowMessageAsnyc("", "Are you sure you want to delete this entry?",MessageDialogStyle.AffirmativeAndNegative);
             if (controler == MessageDialogResult.Affirmative)
             {
-                await Task.Run(() =>
+                using (var dbc = _scopeFactory.Create())
                 {
-                    _repository.Delete(Professor);
-                });
-                _applicationCommands.NavigateCommand.Execute(typeof(ProfessorsView).FullName);
+                    _repository.Delete(Professor.Id);
+                    await dbc.SaveChangesAsync();
+                }
+                    _applicationCommands.NavigateCommand.Execute(typeof(ProfessorsView).FullName);
             }
         }
     }

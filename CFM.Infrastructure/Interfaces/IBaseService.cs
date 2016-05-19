@@ -20,7 +20,8 @@ namespace CFM.Infrastructure.Interfaces
         TObject Update(TObject updated, int key);
         Task<TObject> UpdateAsync(TObject updated, int key);
         void Delete(TObject t);
-        Task<int> DeleteAsync(TObject t);
+        void Delete(int key);
+        Task DeleteAsync(TObject t);
         int Count();
         Task<int> CountAsync();
     }

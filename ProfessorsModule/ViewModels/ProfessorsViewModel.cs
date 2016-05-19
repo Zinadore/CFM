@@ -11,6 +11,7 @@ using CFM.Infrastructure.Events;
 using CFM.Infrastructure.Interfaces;
 using CFM.Infrastructure.Repositories;
 using CFM.ProfessorModule.Views;
+using Mehdime.Entity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -22,14 +23,16 @@ namespace CFM.ProfessorModule.ViewModels
     {
         private readonly IProfessorRepository _repository;
         private readonly IApplicationCommands _applicationCommands;
+        private readonly IDbContextScopeFactory _scopeFactory;
 
         public DelegateCommand<int?> ProfessorDetailsCommand { get; private set; } 
 
         public ProfessorsViewModel(IProfessorRepository repository, IEventAggregator eventAggregator,
-                                    IApplicationCommands applicationCommands)
+                                    IApplicationCommands applicationCommands, IDbContextScopeFactory scopeFactory)
         {
             _repository = repository;
             _applicationCommands = applicationCommands;
+            _scopeFactory = scopeFactory;
             eventAggregator.GetEvent<ProfessorAddedEvent>().Subscribe(HandleNewProffesorEvent);
 
             ProfessorDetailsCommand = new DelegateCommand<int?>(ShowDetails);
@@ -45,10 +48,10 @@ namespace CFM.ProfessorModule.ViewModels
 
         private async void HandleNewProffesorEvent(Professor obj)
         {
-            await Task.Run(() =>
+            using (var dbc = _scopeFactory.CreateReadOnly())
             {
-                Professors = _repository.GetAll();
-            });
+                Professors = await _repository.GetAllAsync();
+            }
         }
 
 
@@ -65,10 +68,10 @@ namespace CFM.ProfessorModule.ViewModels
 
         public async void LoadData()
         {
-            await Task.Run(() =>
+            using (var dbc = _scopeFactory.CreateReadOnly())
             {
-                Professors =  _repository.GetAll();
-            });
+                Professors = await _repository.GetAllAsync();
+            }
         }
 
 

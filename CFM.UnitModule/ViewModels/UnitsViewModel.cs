@@ -8,6 +8,7 @@ using CFM.Infrastructure;
 using CFM.Infrastructure.Base;
 using CFM.Infrastructure.Events;
 using CFM.Infrastructure.Repositories;
+using Mehdime.Entity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -20,15 +21,17 @@ namespace CFM.UnitModule.ViewModels
         private readonly IUnitRepository _repository;
         private readonly IEventAggregator _eventAggregator;
         private readonly IApplicationCommands _applicationCommands;
+        private readonly IDbContextScopeFactory _scopeFactory;
 
         public DelegateCommand<int?> ProfessorDetailsCommand { get; private set; }
 
         public UnitsViewModel(IUnitRepository repository, IEventAggregator eventAggregator,
-                                    IApplicationCommands applicationCommands)
+                                    IApplicationCommands applicationCommands, IDbContextScopeFactory scopeFactory)
         {
             _repository = repository;
             _eventAggregator = eventAggregator;
             _applicationCommands = applicationCommands;
+            _scopeFactory = scopeFactory;
             eventAggregator.GetEvent<UnitAddedEvent>().Subscribe(HandleNewUnitEvent);
 
             ProfessorDetailsCommand = new DelegateCommand<int?>(ShowDetails);
@@ -44,10 +47,10 @@ namespace CFM.UnitModule.ViewModels
 
         private async void HandleNewUnitEvent(Unit obj)
         {
-            await Task.Run(async () =>
+            using (var dbc = _scopeFactory.CreateReadOnly())
             {
                 Units = await _repository.GetAllAsync();
-            });
+            }
         }
 
         private ICollection<Unit> _units;
@@ -63,10 +66,10 @@ namespace CFM.UnitModule.ViewModels
 
         public async void LoadData()
         {
-            await Task.Run(async () =>
+            using (var dbc = _scopeFactory.CreateReadOnly())
             {
                 Units = await _repository.GetAllAsync();
-            });
+            }
         }
 
 
