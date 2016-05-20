@@ -10,7 +10,9 @@ namespace CFM.Infrastructure.Interfaces
         ICollection<TObject> GetAll();
         Task<ICollection<TObject>> GetAllAsync();
         TObject Get(int id);
+        TObject Get(int id, string[] includes);
         Task<TObject> GetAsync(int id);
+        Task<TObject> GetAsync(int id, string[] includes);
         TObject Find(Expression<Func<TObject, bool>> match);
         Task<TObject> FindAsync(Expression<Func<TObject, bool>> match);
         ICollection<TObject> FindAll(Expression<Func<TObject, bool>> match);

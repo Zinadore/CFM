@@ -38,6 +38,7 @@ namespace CFM.UnitModule
         {
             base.RegisterViews();
             UnityContainer.RegisterTypeForNavigation<UnitsView>(typeof(UnitsView).FullName);
+            UnityContainer.RegisterTypeForNavigation<UnitDetailsView>(typeof(UnitDetailsView).FullName);
         }
 
         protected override void RegisterViewModels()

@@ -37,11 +37,31 @@ namespace CFM.Infrastructure.Base
             return test.Set<TObject>().Find(id);
         }
 
+        public TObject Get(int id, string[] includes)
+        {
+            var query = ContextLocator.Get<CfmDbContext>().Set<TObject>();
+            foreach(var inc in includes)
+            {
+                query.Include(inc);
+            }
+            return query.Find(id);
+        }
+
         public async Task<TObject> GetAsync(int id)
         {
             return await ContextLocator.Get<CfmDbContext>().Set<TObject>()
                                                             .FindAsync(id)
                                                             .ConfigureAwait(false);
+        }
+
+        public async Task<TObject> GetAsync(int id, string[] includes)
+        {
+            var query = ContextLocator.Get<CfmDbContext>().Set<TObject>();
+            foreach (var inc in includes)
+            {
+                query.Include(inc);
+            }
+            return await query.FindAsync(id).ConfigureAwait(false);
         }
 
         public TObject Find(Expression<Func<TObject, bool>> match)
@@ -115,7 +135,8 @@ namespace CFM.Infrastructure.Base
         public void Delete(int key)
         {
             var t = ContextLocator.Get<CfmDbContext>().Set<TObject>().Find(key);
-            Delete(t);
+            if (t != null)
+                Delete(t);
         }
 
         public async Task DeleteAsync(TObject t)

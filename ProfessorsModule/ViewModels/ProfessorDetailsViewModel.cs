@@ -23,7 +23,7 @@ using Prism.Regions;
 
 namespace CFM.ProfessorModule.ViewModels
 {
-    class ProfessorDetailsViewModel: BindableBase, INavigationAware
+    class ProfessorDetailsViewModel: BindableBase
     {
         private readonly IProfessorRepository _repository;
         private readonly IApplicationCommands _applicationCommands;
@@ -158,21 +158,6 @@ namespace CFM.ProfessorModule.ViewModels
                 }
                     _applicationCommands.NavigateCommand.Execute(typeof(ProfessorsView).FullName);
             }
-        }
-
-        public void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            
-        }
-
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
-            
-        }
-
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            
         }
     }
 }
