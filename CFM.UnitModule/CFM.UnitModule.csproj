@@ -41,7 +41,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Mehdime.Entity">
-      <HintPath>..\packages\Mehdime.Entity.dll</HintPath>
+      <HintPath>..\Externals\Mehdime.Entity.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -110,9 +110,13 @@
     </Compile>
     <Compile Include="UnitModule.cs" />
     <Compile Include="ViewModels\NewUnitFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\UnitDetailsViewModel.cs" />
     <Compile Include="ViewModels\UnitsViewModel.cs" />
     <Compile Include="Views\NewUnitFlyoutView.xaml.cs">
       <DependentUpon>NewUnitFlyoutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UnitDetailsView.xaml.cs">
+      <DependentUpon>UnitDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UnitsView.xaml.cs">
       <DependentUpon>UnitsView.xaml</DependentUpon>
@@ -135,6 +139,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NewUnitFlyoutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UnitDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
