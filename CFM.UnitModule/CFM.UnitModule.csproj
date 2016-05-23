@@ -36,6 +36,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Bulldog.FlyoutManager.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.3.0.152, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.3.0-ALPHA152\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
@@ -73,6 +81,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.3.0-ALPHA152\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -109,9 +118,13 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="UnitModule.cs" />
+    <Compile Include="ViewModels\EditUnitFlyoutViewModel.cs" />
     <Compile Include="ViewModels\NewUnitFlyoutViewModel.cs" />
     <Compile Include="ViewModels\UnitDetailsViewModel.cs" />
     <Compile Include="ViewModels\UnitsViewModel.cs" />
+    <Compile Include="Views\EditUnitFlyoutView.xaml.cs">
+      <DependentUpon>EditUnitFlyoutView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NewUnitFlyoutView.xaml.cs">
       <DependentUpon>NewUnitFlyoutView.xaml</DependentUpon>
     </Compile>
@@ -125,6 +138,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -135,6 +149,10 @@
   <ItemGroup />
   <ItemGroup>
     <Page Include="Navigation\UnitButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditUnitFlyoutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -10,20 +10,21 @@ namespace CFM.Infrastructure.Interfaces
         ICollection<TObject> GetAll();
         Task<ICollection<TObject>> GetAllAsync();
         TObject Get(int id);
-        TObject Get(int id, string[] includes);
+        TObject Get(int id, params Expression<Func<TObject, object>>[] includeProperties);
         Task<TObject> GetAsync(int id);
-        Task<TObject> GetAsync(int id, string[] includes);
+        Task<TObject> GetAsync(int id, params Expression<Func<TObject, object>>[] includeProperties);
         TObject Find(Expression<Func<TObject, bool>> match);
+        TObject Find(Expression<Func<TObject, bool>> match, params Expression<Func<TObject, object>>[] includeProperties);
         Task<TObject> FindAsync(Expression<Func<TObject, bool>> match);
+        Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, params Expression<Func<TObject, object>>[] includeProperties);
         ICollection<TObject> FindAll(Expression<Func<TObject, bool>> match);
+        ICollection<TObject> FindAll(Expression<Func<TObject, bool>> match, params Expression<Func<TObject, object>>[] includeProperties);
         Task<ICollection<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match);
+        Task<ICollection<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, params Expression<Func<TObject, object>>[] includeProperties);
         TObject Add(TObject t);
-        Task<TObject> AddAsync(TObject t);
         TObject Update(TObject updated, int key);
-        Task<TObject> UpdateAsync(TObject updated, int key);
         void Delete(TObject t);
         void Delete(int key);
-        Task DeleteAsync(TObject t);
         int Count();
         Task<int> CountAsync();
     }

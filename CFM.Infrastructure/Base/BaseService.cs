@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -26,54 +27,79 @@ namespace CFM.Infrastructure.Base
 
         public async Task<ICollection<TObject>> GetAllAsync()
         {
-            return await ContextLocator.Get<CfmDbContext>().Set<TObject>()
-                                                            .ToListAsync()
-                                                            .ConfigureAwait(false);
+            return await ContextLocator.Get<CfmDbContext>().Set<TObject>().ToListAsync().ConfigureAwait(false);
         }
 
         public TObject Get(int id)
         {
-            var test = ContextLocator.Get<CfmDbContext>();
-            return test.Set<TObject>().Find(id);
+            return ContextLocator.Get<CfmDbContext>().Set<TObject>().Find(id);
         }
 
-        public TObject Get(int id, string[] includes)
+        public TObject Get(int id, params Expression<Func<TObject, object>>[] includeProperties)
         {
-            var query = ContextLocator.Get<CfmDbContext>().Set<TObject>();
-            foreach(var inc in includes)
+            foreach (var property in includeProperties)
             {
-                query.Include(inc);
+                ContextLocator.Get<CfmDbContext>().Set<TObject>().Include(property);
             }
-            return query.Find(id);
+            return ContextLocator.Get<CfmDbContext>().Set<TObject>().Find(id);
         }
 
         public async Task<TObject> GetAsync(int id)
         {
-            return await ContextLocator.Get<CfmDbContext>().Set<TObject>()
-                                                            .FindAsync(id)
-                                                            .ConfigureAwait(false);
+            return await ContextLocator.Get<CfmDbContext>().Set<TObject>().FindAsync(id).ConfigureAwait(false);
         }
 
-        public async Task<TObject> GetAsync(int id, string[] includes)
+        public async Task<TObject> GetAsync(int id, params Expression<Func<TObject, object>>[] includeProperties)
         {
             var query = ContextLocator.Get<CfmDbContext>().Set<TObject>();
-            foreach (var inc in includes)
+            IQueryable<TObject> includes = null;
+            query.Find(id);
+            foreach (var property in includeProperties)
             {
-                query.Include(inc);
+                includes = query.Include(property);
             }
-            return await query.FindAsync(id).ConfigureAwait(false);
+            return await includes.FirstAsync().ConfigureAwait(false);
+
+            //foreach (var property in includeProperties)
+            //{
+            //    ContextLocator.Get<CfmDbContext>().Set<TObject>().Include(property);
+            //}
+            //return await ContextLocator.Get<CfmDbContext>().Set<TObject>().FindAsync(id);
+
+            //IQueryable<TObject> query = await ContextLocator.Get<CfmDbContext>().Set<TObject>().FindAsync(id);
+            //foreach (var prop in includeProperties)
+            //{
+            //    query.
+            //}
         }
 
         public TObject Find(Expression<Func<TObject, bool>> match)
         {
-            return ContextLocator.Get<CfmDbContext>().Set<TObject>().SingleOrDefault(match);
+            return ContextLocator.Get<CfmDbContext>().Set<TObject>().FirstOrDefault(match);
+        }
+
+        public TObject Find(Expression<Func<TObject, bool>> match, params Expression<Func<TObject, object>>[] includeProperties)
+        {
+            foreach (var property in includeProperties)
+            {
+                ContextLocator.Get<CfmDbContext>().Set<TObject>().Include(property);
+            }
+            return ContextLocator.Get<CfmDbContext>().Set<TObject>().FirstOrDefault(match);
         }
 
         public async Task<TObject> FindAsync(Expression<Func<TObject, bool>> match)
         {
-            return await ContextLocator.Get<CfmDbContext>().Set<TObject>()
-                                                            .SingleOrDefaultAsync(match)
-                                                            .ConfigureAwait(false);
+            return await ContextLocator.Get<CfmDbContext>().Set<TObject>().FirstOrDefaultAsync(match).ConfigureAwait(false);
+        }
+
+        public async Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, params Expression<Func<TObject, object>>[] includeProperties)
+        {
+            var query = ContextLocator.Get<CfmDbContext>().Set<TObject>().AsQueryable();
+            foreach (var property in includeProperties)
+            {
+                query.Include(property);
+            }
+            return await query.FirstOrDefaultAsync(match);
         }
 
         public ICollection<TObject> FindAll(Expression<Func<TObject, bool>> match)
@@ -81,21 +107,30 @@ namespace CFM.Infrastructure.Base
             return ContextLocator.Get<CfmDbContext>().Set<TObject>().Where(match).ToList();
         }
 
+        public ICollection<TObject> FindAll(Expression<Func<TObject, bool>> match, params Expression<Func<TObject, object>>[] includeProperties)
+        {
+            foreach (var property in includeProperties)
+            {
+                ContextLocator.Get<CfmDbContext>().Set<TObject>().Include(property);
+            }
+            return ContextLocator.Get<CfmDbContext>().Set<TObject>().Where(match).ToList();
+        }
+
         public async Task<ICollection<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match)
         {
-            return await ContextLocator.Get<CfmDbContext>().Set<TObject>()
-                                                            .Where(match)
-                                                            .ToListAsync()
-                                                            .ConfigureAwait(false);
+            return await ContextLocator.Get<CfmDbContext>().Set<TObject>().Where(match).ToListAsync().ConfigureAwait(false);
+        }
+
+        public async Task<ICollection<TObject>> FindAllAsync(Expression<Func<TObject, bool>> match, params Expression<Func<TObject, object>>[] includeProperties)
+        {
+            foreach (var property in includeProperties)
+            {
+                ContextLocator.Get<CfmDbContext>().Set<TObject>().Include(property);
+            }
+            return await ContextLocator.Get<CfmDbContext>().Set<TObject>().Where(match).ToListAsync().ConfigureAwait(false);
         }
 
         public TObject Add(TObject t)
-        {
-            ContextLocator.Get<CfmDbContext>().Set<TObject>().Add(t);
-            return t;
-        }
-
-        public async Task<TObject> AddAsync(TObject t)
         {
             ContextLocator.Get<CfmDbContext>().Set<TObject>().Add(t);
             return t;
@@ -114,19 +149,6 @@ namespace CFM.Infrastructure.Base
             return existing;
         }
 
-        public async Task<TObject> UpdateAsync(TObject updated, int key)
-        {
-            if (updated == null)
-                return null;
-
-            TObject existing = await ContextLocator.Get<CfmDbContext>().Set<TObject>().FindAsync(key).ConfigureAwait(false);
-            if (existing != null)
-            {
-                ContextLocator.Get<CfmDbContext>().Entry(existing).CurrentValues.SetValues(updated);
-            }
-            return existing;
-        }
-
         public void Delete(TObject t)
         {
             ContextLocator.Get<CfmDbContext>().Set<TObject>().Remove(t);
@@ -137,11 +159,6 @@ namespace CFM.Infrastructure.Base
             var t = ContextLocator.Get<CfmDbContext>().Set<TObject>().Find(key);
             if (t != null)
                 Delete(t);
-        }
-
-        public async Task DeleteAsync(TObject t)
-        {
-            ContextLocator.Get<CfmDbContext>().Set<TObject>().Remove(t);
         }
 
         public int Count()

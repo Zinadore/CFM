@@ -32,6 +32,7 @@ namespace CFM.UnitModule
         {
             base.Initialize();
             _flyoutManager.RegisterFlyout<NewUnitFlyoutView>(FlyoutNames.NewUnitFlyout, RegionNames.FlyoutRegion);
+            _flyoutManager.RegisterFlyout<EditUnitFlyoutView>(FlyoutNames.EditUnitFlyout, RegionNames.FlyoutRegion);
         }
 
         protected override void RegisterViews()

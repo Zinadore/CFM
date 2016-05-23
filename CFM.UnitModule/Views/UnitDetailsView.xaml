@@ -13,22 +13,49 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <TextBlock Text="I am loading god damnit"
-                    Visibility="{Binding CurrentUnit.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter }}"></TextBlock>
-        <TextBlock Grid.Column="1" 
-                   Text="{Binding CurrentUnit.Result.Code}"
-                   Visibility="{Binding CurrentUnit.IsCompleted, Converter={StaticResource BooleanToVisibilityConverter }}"></TextBlock>
-        <TextBlock Grid.Column="2" 
-                   Text="{Binding CurrentUnit.Result.Title}"
-                   Visibility="{Binding CurrentUnit.IsCompleted, Converter={StaticResource BooleanToVisibilityConverter }}"></TextBlock>
-        <Button Grid.Column="3"
-                VerticalAlignment="Center"
-                Command="{Binding DeleteCommand}">Delete</Button>
+        <TextBlock Visibility="{Binding Loading, Converter={StaticResource BooleanToVisibilityConverter}}">I am loading!</TextBlock>
+        <Grid Visibility="{Binding DoneLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.85*"/> <!--Content Collumn-->
+                <ColumnDefinition Width="0.15*"/> <!--Buttons Collumn-->
+            </Grid.ColumnDefinitions>
+            <!--Main Content-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.08*"/>
+                    <RowDefinition Height="0.08*"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" 
+                           Grid.Column="0"
+                           FontWeight="Bold"
+                           FontSize="16">Code</TextBlock>
+                <TextBlock Grid.Row="0"
+                           Grid.Column="1"
+                           FontWeight="Bold"
+                           FontSize="16">Title</TextBlock>
+                <TextBlock Grid.Row="1" 
+                           Grid.Column="0"
+                           Text="{Binding CurrentUnit.Code}"></TextBlock>
+                <TextBlock Grid.Row="1" 
+                           Grid.Column="1"
+                           Text="{Binding CurrentUnit.Title}"></TextBlock>
+                <ListView Grid.Row="2"
+                          Grid.Column="0"
+                          ItemsSource="{Binding CurrentUnit.Teachers}"
+                          DisplayMemberPath="FullName">
+                    
+                </ListView>
+            </Grid>
+            <!--Buttons-->
+            <StackPanel Grid.Column="1">
+                <Button Command="{Binding DeleteCommand}">Delete</Button>
+                <Button Command="{Binding EditCommand}">Edit</Button>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

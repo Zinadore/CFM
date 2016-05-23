@@ -14,7 +14,7 @@ namespace CFM.Data.Models
         public string Title { get; set; }
 
 
-        public ICollection<Professor> Teachers { get; set; }
+        public virtual ICollection<Professor> Teachers { get; set; }
 
     }
 }

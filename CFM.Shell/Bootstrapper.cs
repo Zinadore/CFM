@@ -50,7 +50,7 @@ namespace CFM.Shell
             Container.RegisterType<IDbContextScopeFactory, DbContextScopeFactory>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
             Container.RegisterType<IAmbientDbContextLocator, AmbientDbContextLocator>(new ContainerControlledLifetimeManager());
             //Repositories
-            //Container.RegisterType<CfmDbContext>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<CfmDbContext>(new PerResolveLifetimeManager());
             Container.RegisterType<IProfessorRepository, ProfessorRepository>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IUnitRepository, UnitRepository>(new ContainerControlledLifetimeManager());
             // Application commands

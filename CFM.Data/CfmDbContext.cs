@@ -13,7 +13,9 @@ namespace CFM.Data
         public CfmDbContext()
             :base("name=cfmConnection")
         {
-                Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CfmDbContext>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CfmDbContext>());
+            this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.ProxyCreationEnabled = false;
         }
 
         public DbSet<Professor> Professors { get; set; }

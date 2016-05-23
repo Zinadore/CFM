@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Bulldog.FlyoutManager;
+using CFM.Data;
 using CFM.Data.Models;
 using CFM.Infrastructure;
+using CFM.Infrastructure.Constants;
 using CFM.Infrastructure.Interfaces;
 using CFM.Infrastructure.Repositories;
 using CFM.UnitModule.Views;
@@ -22,29 +28,34 @@ namespace CFM.UnitModule.ViewModels
         private readonly IDbContextScopeFactory _contextFactory;
         private readonly IApplicationCommands _applicationCommands;
         private readonly IDialogService _dialogService;
+        private readonly IFlyoutManager _flyoutManager;
         private int lastDeletedId;
         private int currentId;
 
         public DelegateCommand DeleteCommand { get; private set; }
+        public DelegateCommand EditCommand { get; private set; }
 
         public UnitDetailsViewModel(IUnitRepository unitRepository, IDbContextScopeFactory contextFactory,
-                                    IApplicationCommands applicationCommands, IDialogService dialogService)
+                                    IApplicationCommands applicationCommands, IDialogService dialogService,
+                                    IFlyoutManager flyoutManager)
         {
             _unitRepository = unitRepository;
             _contextFactory = contextFactory;
             _applicationCommands = applicationCommands;
             _dialogService = dialogService;
+            _flyoutManager = flyoutManager;
             lastDeletedId = currentId -1;
             DeleteCommand = new DelegateCommand(Delete);
+            EditCommand = new DelegateCommand(Edit);
         }
 
         /*
          * Bindable Properties
          */
         #region Bindable Properties
-        private NotifyTaskCompletion<Unit> _currentUnit;
+        private Unit _currentUnit;
 
-        public NotifyTaskCompletion<Unit> CurrentUnit
+        public Unit CurrentUnit
         {
             get { return _currentUnit; }
             set
@@ -52,6 +63,17 @@ namespace CFM.UnitModule.ViewModels
                 SetProperty(ref _currentUnit, value);
             }
         }
+
+        private bool _loading;
+
+        public bool Loading
+        {
+            get { return _loading; }
+            set { SetProperty(ref _loading, value); }
+        }
+
+        public bool DoneLoading => !Loading;
+
         #endregion
 
         /*
@@ -73,22 +95,32 @@ namespace CFM.UnitModule.ViewModels
                 _applicationCommands.NavigateCommand.Execute(typeof(UnitsView).FullName);
             }
         }
+
+        private void Edit()
+        {
+            var parameters = new FlyoutParameters();
+            parameters["unitId"] = currentId;
+            _flyoutManager.OpenFlyout(FlyoutNames.EditUnitFlyout,parameters);
+        }
         #endregion
 
         /*
          * INavigationAware Implementations
          */
         #region INavigationAware 
-        public void OnNavigatedTo(NavigationContext navigationContext)
+        public async void OnNavigatedTo(NavigationContext navigationContext)
         {
+            Loading = true;
             currentId = Convert.ToInt32(navigationContext.Parameters["unitId"]);
             if (currentId == lastDeletedId)
             {
                 _applicationCommands.NavigateCommand.Execute(typeof(UnitsView).FullName);
             }
+            //TestUnit = await _context.Units.Include(unit => unit.Teachers).FirstAsync(u => u.Id == currentId);
             using (_contextFactory.CreateReadOnly())
             {
-                CurrentUnit = new NotifyTaskCompletion<Unit>(_unitRepository.GetAsync(currentId));
+                CurrentUnit = await _unitRepository.GetAsync(currentId, includeProperties: i => i.Teachers);
+                Loading = false;
             }
         }
 
