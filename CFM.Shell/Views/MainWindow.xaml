@@ -12,7 +12,8 @@
                     mc:Ignorable="d"
                     prism:ViewModelLocator.AutoWireViewModel="True"
                     GlowBrush="{DynamicResource AccentColorBrush}"
-                    Title="CITY's Feedback Manager" Height="576" Width="1024">
+                    Title="CITY's Feedback Manager" Height="576" Width="1024"
+                    MinHeight="576" MinWidth="1024">
     <metro:MetroWindow.Flyouts>
         <bulldog:FlyoutContainer prism:RegionManager.RegionName="{x:Static infConstants:RegionNames.FlyoutRegion}"/>
     </metro:MetroWindow.Flyouts>
