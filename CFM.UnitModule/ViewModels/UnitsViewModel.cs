@@ -34,7 +34,6 @@ namespace CFM.UnitModule.ViewModels
             _applicationCommands = applicationCommands;
             _scopeFactory = scopeFactory;
             eventAggregator.GetEvent<UnitAddedEvent>().Subscribe(HandleNewUnitEvent);
-
             UnitDetailsCommand = new DelegateCommand<int?>(ShowDetails);
         }
 

@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Bulldog.FlyoutManager;
 using CFM.Data;
+using CFM.Data.Models;
 using CFM.Infrastructure;
 using CFM.Infrastructure.Constants;
 using CFM.Infrastructure.Interfaces;
@@ -46,13 +47,13 @@ namespace CFM.Shell
         {
             base.ConfigureContainer();
             //AmbientDbContext
-            //Container.RegisterType<IDbContextFactory, DbContextF
             Container.RegisterType<IDbContextScopeFactory, DbContextScopeFactory>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
             Container.RegisterType<IAmbientDbContextLocator, AmbientDbContextLocator>(new ContainerControlledLifetimeManager());
             //Repositories
-            Container.RegisterType<CfmDbContext>(new PerResolveLifetimeManager());
+            //Container.RegisterType<CfmDbContext>(new PerResolveLifetimeManager());
             Container.RegisterType<IProfessorRepository, ProfessorRepository>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IUnitRepository, UnitRepository>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<IAssignmentRepository, AssignmentRepository>(new ContainerControlledLifetimeManager());
             // Application commands
             Container.RegisterType<IApplicationCommands, ApplicationCommandsProxy>(new ContainerControlledLifetimeManager());
            
@@ -64,6 +65,7 @@ namespace CFM.Shell
             ModuleCatalog moduleCatalog = (ModuleCatalog)this.ModuleCatalog;
             moduleCatalog.AddModule(typeof(UnitModule.UnitModule));
             moduleCatalog.AddModule(typeof(ProfessorModule.ProfessorModule));
+            moduleCatalog.AddModule(typeof(AssignmentModule.AssignmentModule));
         }
 
         protected override RegionAdapterMappings ConfigureRegionAdapterMappings()

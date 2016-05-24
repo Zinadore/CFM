@@ -11,12 +11,14 @@ using CFM.Data;
 using CFM.Data.Models;
 using CFM.Infrastructure;
 using CFM.Infrastructure.Constants;
+using CFM.Infrastructure.Events;
 using CFM.Infrastructure.Interfaces;
 using CFM.Infrastructure.Repositories;
 using CFM.UnitModule.Views;
 using MahApps.Metro.Controls.Dialogs;
 using Mehdime.Entity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 
@@ -37,7 +39,7 @@ namespace CFM.UnitModule.ViewModels
 
         public UnitDetailsViewModel(IUnitRepository unitRepository, IDbContextScopeFactory contextFactory,
                                     IApplicationCommands applicationCommands, IDialogService dialogService,
-                                    IFlyoutManager flyoutManager)
+                                    IFlyoutManager flyoutManager, IEventAggregator eventAggregator)
         {
             _unitRepository = unitRepository;
             _contextFactory = contextFactory;
@@ -45,8 +47,18 @@ namespace CFM.UnitModule.ViewModels
             _dialogService = dialogService;
             _flyoutManager = flyoutManager;
             lastDeletedId = currentId -1;
+            eventAggregator.GetEvent<UnitEditedEvent>().Subscribe(RefreshUnit);
             DeleteCommand = new DelegateCommand(Delete);
             EditCommand = new DelegateCommand(Edit);
+        }
+
+        private async void RefreshUnit(int? obj)
+        {
+            if (currentId == obj.Value)
+                using (_contextFactory.CreateReadOnly())
+                {
+                    CurrentUnit = await _unitRepository.GetAsync(currentId, includeProperties: i => i.Teachers);
+                }
         }
 
         /*
@@ -119,7 +131,9 @@ namespace CFM.UnitModule.ViewModels
             //TestUnit = await _context.Units.Include(unit => unit.Teachers).FirstAsync(u => u.Id == currentId);
             using (_contextFactory.CreateReadOnly())
             {
-                CurrentUnit = await _unitRepository.GetAsync(currentId, includeProperties: i => i.Teachers);
+                CurrentUnit = await _unitRepository.FindAsync(u => u.Id == currentId, includeProperties: i => i.Teachers);
+                if(CurrentUnit == null)
+                    _applicationCommands.NavigateCommand.Execute(typeof(UnitsView).FullName);
                 Loading = false;
             }
         }

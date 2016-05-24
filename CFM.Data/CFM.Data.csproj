@@ -50,14 +50,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CfmDbContext.cs" />
+    <Compile Include="Migrations\201605241424324_assignment_entity_added.cs" />
+    <Compile Include="Migrations\201605241424324_assignment_entity_added.Designer.cs">
+      <DependentUpon>201605241424324_assignment_entity_added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605241431227_fixed_assignment_references.cs" />
+    <Compile Include="Migrations\201605241431227_fixed_assignment_references.Designer.cs">
+      <DependentUpon>201605241431227_fixed_assignment_references.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Professor.cs" />
     <Compile Include="Models\Unit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="Models\App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201605241424324_assignment_entity_added.resx">
+      <DependentUpon>201605241424324_assignment_entity_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605241431227_fixed_assignment_references.resx">
+      <DependentUpon>201605241431227_fixed_assignment_references.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

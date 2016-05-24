@@ -59,18 +59,6 @@ namespace CFM.Infrastructure.Base
                 includes = query.Include(property);
             }
             return await includes.FirstAsync().ConfigureAwait(false);
-
-            //foreach (var property in includeProperties)
-            //{
-            //    ContextLocator.Get<CfmDbContext>().Set<TObject>().Include(property);
-            //}
-            //return await ContextLocator.Get<CfmDbContext>().Set<TObject>().FindAsync(id);
-
-            //IQueryable<TObject> query = await ContextLocator.Get<CfmDbContext>().Set<TObject>().FindAsync(id);
-            //foreach (var prop in includeProperties)
-            //{
-            //    query.
-            //}
         }
 
         public TObject Find(Expression<Func<TObject, bool>> match)
@@ -95,10 +83,7 @@ namespace CFM.Infrastructure.Base
         public async Task<TObject> FindAsync(Expression<Func<TObject, bool>> match, params Expression<Func<TObject, object>>[] includeProperties)
         {
             var query = ContextLocator.Get<CfmDbContext>().Set<TObject>().AsQueryable();
-            foreach (var property in includeProperties)
-            {
-                query.Include(property);
-            }
+            query = includeProperties.Aggregate(query, (current, property) => current.Include(property));
             return await query.FirstOrDefaultAsync(match);
         }
 

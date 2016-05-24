@@ -15,6 +15,6 @@ namespace CFM.Data.Models
 
 
         public virtual ICollection<Professor> Teachers { get; set; }
-
+        public virtual ICollection<Assignment> Assignments { get; set; } 
     }
 }

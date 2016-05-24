@@ -11,4 +11,8 @@ namespace CFM.Infrastructure.Events
     public class UnitAddedEvent: PubSubEvent<Unit>
     {
     }
+
+    public class UnitEditedEvent : PubSubEvent<int?>
+    {
+    }
 }

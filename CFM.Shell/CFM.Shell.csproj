@@ -160,6 +160,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CFM.AssignmentModule\CFM.AssignmentModule.csproj">
+      <Project>{584ac0e7-aa4b-4664-83a4-8e538a1c5c76}</Project>
+      <Name>CFM.AssignmentModule</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CFM.Data\CFM.Data.csproj">
       <Project>{543446B3-C568-4D09-923C-99A603504161}</Project>
       <Name>CFM.Data</Name>

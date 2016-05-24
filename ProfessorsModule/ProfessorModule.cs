@@ -35,10 +35,5 @@ namespace CFM.ProfessorModule
             UnityContainer.RegisterTypeForNavigation<ProfessorsView>(typeof(ProfessorsView).FullName);
             UnityContainer.RegisterTypeForNavigation<ProfessorDetailsView>(typeof(ProfessorDetailsView).FullName);
         }
-
-        protected override void RegisterViewModels()
-        {
-            base.RegisterViewModels();
-        }
     }
 }

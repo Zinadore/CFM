@@ -20,6 +20,7 @@ namespace CFM.Data
 
         public DbSet<Professor> Professors { get; set; }
         public DbSet<Unit> Units { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -27,7 +28,10 @@ namespace CFM.Data
 
             modelBuilder.Entity<Unit>()
                 .HasMany(u => u.Teachers)
-                .WithMany();    
+                .WithMany();
+            modelBuilder.Entity<Unit>()
+                .HasMany(u => u.Assignments)
+                .WithOptional();
         }
     } 
 }

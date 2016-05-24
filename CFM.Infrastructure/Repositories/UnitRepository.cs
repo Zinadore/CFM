@@ -30,14 +30,39 @@ namespace CFM.Infrastructure.Repositories
             return base.Add(newUnit);
         }
 
-        public new void Update(Unit updated, int key)
+        public new Unit Update(Unit updated, int key)
         {
+            if (updated == null)
+                return null;
             var db = ContextLocator.Get<CfmDbContext>();
-            foreach (Professor p in updated.Teachers)
-            
-           db.Entry(p).State = EntityState.Unchanged;
- 
-            base.Update(updated, key);
+            // get Unit in its current state
+            var existing = db.Units.Include(i => i.Teachers).First(u => u.Id == key);
+
+            if (existing == null)
+                return null;
+            // work out Professors deleted in the updated Unit
+            var deletedProfessors = existing.Teachers.Except(updated.Teachers).ToList();
+
+            // remove the references to removed Professors
+            deletedProfessors.ForEach(t => existing.Teachers.Remove(t));
+
+            // work out Professors added in the updated Unit
+            var addedProffessors = updated.Teachers.Except(existing.Teachers).ToList();
+
+            // add the references to added Professors
+            addedProffessors.ForEach(t =>
+            {
+                existing.Teachers.Add(t);
+                // attach this shit
+                db.Professors.Attach(t);
+                // let the context know it is an existing entity
+                db.Entry(t).State = EntityState.Modified;
+            });
+
+            db.Entry(existing).CurrentValues.SetValues(updated);
+
+            return existing;
         }
+        
     }
 }
