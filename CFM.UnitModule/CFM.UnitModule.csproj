@@ -170,6 +170,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CFM.AssignmentModule\CFM.AssignmentModule.csproj">
+      <Project>{584AC0E7-AA4B-4664-83A4-8E538A1C5C76}</Project>
+      <Name>CFM.AssignmentModule</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CFM.Data\CFM.Data.csproj">
       <Project>{543446b3-c568-4d09-923c-99a603504161}</Project>
       <Name>CFM.Data</Name>
@@ -177,6 +181,10 @@
     <ProjectReference Include="..\CFM.Infrastructure\CFM.Infrastructure.csproj">
       <Project>{460ed53f-c995-4f96-8bd6-79516d516d11}</Project>
       <Name>CFM.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProfessorsModule\CFM.ProfessorModule.csproj">
+      <Project>{C7931C2A-3679-4337-B7C4-38262247CE43}</Project>
+      <Name>CFM.ProfessorModule</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

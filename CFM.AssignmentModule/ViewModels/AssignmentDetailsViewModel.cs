@@ -39,6 +39,24 @@ namespace CFM.AssignmentModule.ViewModels
             get { return _currentAssignment; }
             set { SetProperty(ref _currentAssignment, value); }
         }
+
+        private string _deadlineText;
+        public string DeadlineText
+        {
+            get { return _deadlineText; }
+            set { SetProperty(ref _deadlineText, value); }
+        }
+
+        private double _daysLeft;
+        public double DaysLeft
+        {
+            get { return _daysLeft; }
+            set { SetProperty(ref _daysLeft, value); }
+        }
+
+        //public string DeadlineText => (CurrentAssignment.Deadline > DateTime.Now)? CurrentAssignment.Deadline + "\t (" + DaysLeft + " days left)": CurrentAssignment.Deadline + "\t (past deadline)";
+
+        //public double DaysLeft => (CurrentAssignment.Deadline - DateTime.Now).TotalDays;
         #endregion
 
         #region INavigationAware Implementation
@@ -57,6 +75,8 @@ namespace CFM.AssignmentModule.ViewModels
                 if (CurrentAssignment == null)
                     _applicationCommands.NavigateCommand.Execute(typeof(AssignmentsView).FullName);
                 //Loading = false;
+                DaysLeft = (CurrentAssignment.Deadline - DateTime.Now).TotalDays;
+                DeadlineText = (CurrentAssignment.Deadline > DateTime.Now) ? CurrentAssignment.Deadline + "\t (" + DaysLeft + " days left)" : CurrentAssignment.Deadline + "\t (past deadline)";
             }
         }
 

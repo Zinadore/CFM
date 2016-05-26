@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssignmentModule.cs" />
+    <Compile Include="DaysLeftToColorConverter.cs" />
     <Compile Include="Navigation\AssignmentButton.xaml.cs">
       <DependentUpon>AssignmentButton.xaml</DependentUpon>
     </Compile>

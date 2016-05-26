@@ -3,12 +3,57 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:CFM.AssignmentModule.Views"
+             xmlns:local="clr-namespace:CFM.AssignmentModule"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <local:DaysLeftToColorConverter x:Key="daysLeftToColorConverter" />
+    </UserControl.Resources>
     <Grid>
-        <Label Content="{Binding CurrentAssignment.Title}"></Label>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition><!--Content-->
+            <ColumnDefinition Width="Auto"></ColumnDefinition><!--Buttons-->
+       </Grid.ColumnDefinitions>
+        
+       <!--CONTENT START-->
+        <Grid Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition><!--Details-->
+                <ColumnDefinition></ColumnDefinition><!--Goals-->
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" FontWeight="Bold"  FontSize="16">Title</Label>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding CurrentAssignment.Title}"></TextBlock>
+            <Label Grid.Row="2" Grid.Column="0" FontWeight="Bold"  FontSize="16">Type</Label>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding CurrentAssignment.Type}"></TextBlock>
+            <Label Grid.Row="4" Grid.Column="0" FontWeight="Bold"  FontSize="16">Deadline</Label>
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="{Binding DeadlineText}"
+                       Foreground="{Binding DaysLeft, Converter={StaticResource daysLeftToColorConverter}}">
+            </TextBlock>
+            
+            <ListView Grid.Row="0" Grid.Column="1" Grid.RowSpan="6">
+                <ListViewItem>
+                    Some goal goes here
+                </ListViewItem>
+                <ListViewItem>
+                    another goal goes here
+                </ListViewItem>
+            </ListView>
+        </Grid>
+        <!--Buttons-->
+        <StackPanel Grid.Column="1">
+            <Button Command="{Binding DeleteCommand}" Background="Crimson">Delete</Button>
+            <Button Command="{Binding EditCommand}" Background="LightGoldenrodYellow">Edit</Button>
+        </StackPanel>
     </Grid>
 </UserControl>

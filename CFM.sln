@@ -8,9 +8,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shell", "Shell", "{3353B888-73C4-493A-AC18-4F9A4C6C26B5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{DFF1BAF1-A39F-443C-B2A5-9E4507541D62}"
-	ProjectSection(SolutionItems) = preProject
-		CFM.Shell\bin\Debug\cfmData.sdf = CFM.Shell\bin\Debug\cfmData.sdf
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CFM.Infrastructure", "CFM.Infrastructure\CFM.Infrastructure.csproj", "{460ED53F-C995-4F96-8BD6-79516D516D11}"
 EndProject

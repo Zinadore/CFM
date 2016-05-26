@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Bulldog.FlyoutManager;
+using CFM.AssignmentModule.Views;
 using CFM.Data;
 using CFM.Data.Models;
 using CFM.Infrastructure;
@@ -14,6 +15,7 @@ using CFM.Infrastructure.Constants;
 using CFM.Infrastructure.Events;
 using CFM.Infrastructure.Interfaces;
 using CFM.Infrastructure.Repositories;
+using CFM.ProfessorModule.Views;
 using CFM.UnitModule.Views;
 using MahApps.Metro.Controls.Dialogs;
 using Mehdime.Entity;
@@ -36,6 +38,8 @@ namespace CFM.UnitModule.ViewModels
 
         public DelegateCommand DeleteCommand { get; private set; }
         public DelegateCommand EditCommand { get; private set; }
+        public DelegateCommand<int?> ProfessorDetailsCommand { get; private set; } 
+        public DelegateCommand<int?> AssignmentDetailsCommand { get; private set; }
 
         public UnitDetailsViewModel(IUnitRepository unitRepository, IDbContextScopeFactory contextFactory,
                                     IApplicationCommands applicationCommands, IDialogService dialogService,
@@ -50,23 +54,15 @@ namespace CFM.UnitModule.ViewModels
             eventAggregator.GetEvent<UnitEditedEvent>().Subscribe(RefreshUnit);
             DeleteCommand = new DelegateCommand(Delete);
             EditCommand = new DelegateCommand(Edit);
+            ProfessorDetailsCommand = new DelegateCommand<int?>(ShowProfessor);
+            AssignmentDetailsCommand = new DelegateCommand<int?>(ShowAssignment);
         }
-
-        private async void RefreshUnit(int? obj)
-        {
-            if (currentId == obj.Value)
-                using (_contextFactory.CreateReadOnly())
-                {
-                    CurrentUnit = await _unitRepository.GetAsync(currentId, includeProperties: i => i.Teachers);
-                }
-        }
-
+        
         /*
          * Bindable Properties
          */
         #region Bindable Properties
         private Unit _currentUnit;
-
         public Unit CurrentUnit
         {
             get { return _currentUnit; }
@@ -77,7 +73,6 @@ namespace CFM.UnitModule.ViewModels
         }
 
         private bool _loading;
-
         public bool Loading
         {
             get { return _loading; }
@@ -92,6 +87,28 @@ namespace CFM.UnitModule.ViewModels
          * Command Methods
          */
         #region Command Methods
+        private void ShowProfessor(int? id)
+        {
+            var uriQuery = new NavigationParameters();
+            uriQuery.Add("profId", id);
+            _applicationCommands.NavigateCommand.Execute(typeof(ProfessorDetailsView).FullName + uriQuery);
+        }
+
+        private void ShowAssignment(int? id)
+        {
+            var uriQuery = new NavigationParameters();
+            uriQuery.Add("assignmentId", id);
+            _applicationCommands.NavigateCommand.Execute(typeof(AssignmentDetailsView).FullName + uriQuery);
+        }
+
+        private async void RefreshUnit(int? obj)
+        {
+            if (currentId == obj.Value)
+                using (_contextFactory.CreateReadOnly())
+                {
+                    CurrentUnit = await _unitRepository.GetAsync(currentId, includeProperties: i => i.Teachers);
+                }
+        }
 
         private async void Delete()
         {

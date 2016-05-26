@@ -56,14 +56,30 @@
                 <ListView Grid.Row="3"
                           Grid.Column="0"
                           Margin="0,0,5,0"
-                          ItemsSource="{Binding CurrentUnit.Teachers}"
-                          DisplayMemberPath="FullName">
+                          ItemsSource="{Binding CurrentUnit.Teachers}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Content="{Binding FullName}"></Label>
+                                <Button Grid.Column="1" MaxWidth="50" Width="Auto" 
+                                        Background="{StaticResource ProfessorColorBrush}"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                            AncestorType={x:Type UserControl}}, Path=DataContext.ProfessorDetailsCommand}"
+                                        CommandParameter="{Binding Id}">
+                                    <metro:PackIconModern Kind="Eye" />
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
                 <ListView Grid.Row="3"
                           Grid.Column="1"
                           Margin="0,0,5,0"
-                          ItemsSource="{Binding CurrentUnit.Assignments}"
-                          DisplayMemberPath="Title">
+                          ItemsSource="{Binding CurrentUnit.Assignments}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -72,7 +88,11 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0" Content="{Binding Title}"></Label>
-                                <Button Grid.Column="1" MaxWidth="10">
+                                <Button Grid.Column="1" MaxWidth="50" Width="Auto" 
+                                        Background="{StaticResource AssignmentColorBrush}"
+                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                            AncestorType={x:Type UserControl}}, Path=DataContext.AssignmentDetailsCommand}"
+                                        CommandParameter="{Binding Id}">
                                     <metro:PackIconModern Kind="Eye" />
                                 </Button>
                             </Grid>
@@ -82,8 +102,8 @@
             </Grid>
             <!--Buttons-->
             <StackPanel Grid.Column="1">
-                <Button Command="{Binding DeleteCommand}">Delete</Button>
-                <Button Command="{Binding EditCommand}">Edit</Button>
+                <Button Command="{Binding DeleteCommand}" Background="Crimson">Delete</Button>
+                <Button Command="{Binding EditCommand}" Background="LightGoldenrodYellow">Edit</Button>
             </StackPanel>
         </Grid>
     </Grid>
