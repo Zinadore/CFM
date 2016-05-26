@@ -30,6 +30,14 @@ namespace CFM.Infrastructure.Base
             return await ContextLocator.Get<CfmDbContext>().Set<TObject>().ToListAsync().ConfigureAwait(false);
         }
 
+        public async Task<ICollection<TObject>> GetAllAsync(params Expression<Func<TObject, object>>[] includeProperties)
+        {
+            var query = ContextLocator.Get<CfmDbContext>().Set<TObject>().AsQueryable();
+            query = includeProperties.Aggregate(query, (current, prop) => current.Include(prop));
+
+            return await query.ToListAsync();
+        }
+
         public TObject Get(int id)
         {
             return ContextLocator.Get<CfmDbContext>().Set<TObject>().Find(id);

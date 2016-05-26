@@ -10,7 +10,6 @@ namespace CFM.Data.Models
 {
     public class Assignment
     {
-        [Key]
         public int Id { get; set; }
 
         public DateTime Deadline { get; set; }

@@ -36,6 +36,7 @@ namespace CFM.AssignmentModule
         {
             base.RegisterViews();
             UnityContainer.RegisterTypeForNavigation<AssignmentsView>(typeof(AssignmentsView).FullName);
+            UnityContainer.RegisterTypeForNavigation<AssignmentDetailsView>(typeof(AssignmentDetailsView).FullName);
         }
     }
 }

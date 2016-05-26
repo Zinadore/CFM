@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CFM.AssignmentModule.Views;
 using CFM.Data.Models;
+using CFM.Infrastructure;
 using CFM.Infrastructure.Base;
 using CFM.Infrastructure.Repositories;
 using Mehdime.Entity;
+using Prism.Commands;
 using Prism.Regions;
 
 namespace CFM.AssignmentModule.ViewModels
@@ -15,11 +18,25 @@ namespace CFM.AssignmentModule.ViewModels
     {
         private readonly IAssignmentRepository _assignmentRepository;
         private readonly IDbContextScopeFactory _contextFactory;
+        private readonly IApplicationCommands _applicationCommands;
 
-        public AssignmentsViewModel(IAssignmentRepository assignmentRepository, IDbContextScopeFactory contextFactory)
+        public DelegateCommand<int?> DetailsCommand { get; private set; } 
+
+        public AssignmentsViewModel(IAssignmentRepository assignmentRepository, IDbContextScopeFactory contextFactory,
+               IApplicationCommands applicationCommands)
         {
             _assignmentRepository = assignmentRepository;
             _contextFactory = contextFactory;
+            _applicationCommands = applicationCommands;
+            DetailsCommand = new DelegateCommand<int?>(ShowDetails);
+        }
+
+        private void ShowDetails(int? id)
+        {
+            var uriQuery = new NavigationParameters();
+            uriQuery.Add("assignmentId", id);
+            Filter = "";//Clear the search filter
+            _applicationCommands.NavigateCommand.Execute(typeof(AssignmentDetailsView).FullName + uriQuery);
         }
 
         protected override void ApplyFilter(string filter)
@@ -46,7 +63,7 @@ namespace CFM.AssignmentModule.ViewModels
             Filter = "";
             using (_contextFactory.CreateReadOnly())
             {
-                AllAssignments = await _assignmentRepository.GetAllAsync();
+                AllAssignments = FilteredCollection = await _assignmentRepository.GetAllAsync(a => a.Unit);
             }
                 
         }

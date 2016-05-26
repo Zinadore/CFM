@@ -50,13 +50,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CfmDbContext.cs" />
-    <Compile Include="Migrations\201605241424324_assignment_entity_added.cs" />
-    <Compile Include="Migrations\201605241424324_assignment_entity_added.Designer.cs">
-      <DependentUpon>201605241424324_assignment_entity_added.cs</DependentUpon>
+    <Compile Include="Migrations\201605251426380_Initial_Create.cs" />
+    <Compile Include="Migrations\201605251426380_Initial_Create.Designer.cs">
+      <DependentUpon>201605251426380_Initial_Create.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201605241431227_fixed_assignment_references.cs" />
-    <Compile Include="Migrations\201605241431227_fixed_assignment_references.Designer.cs">
-      <DependentUpon>201605241431227_fixed_assignment_references.cs</DependentUpon>
+    <Compile Include="Migrations\201605251443222_SeedOnly.cs" />
+    <Compile Include="Migrations\201605251443222_SeedOnly.Designer.cs">
+      <DependentUpon>201605251443222_SeedOnly.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
@@ -69,11 +69,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201605241424324_assignment_entity_added.resx">
-      <DependentUpon>201605241424324_assignment_entity_added.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201605251426380_Initial_Create.resx">
+      <DependentUpon>201605251426380_Initial_Create.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605241431227_fixed_assignment_references.resx">
-      <DependentUpon>201605241431227_fixed_assignment_references.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201605251443222_SeedOnly.resx">
+      <DependentUpon>201605251443222_SeedOnly.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

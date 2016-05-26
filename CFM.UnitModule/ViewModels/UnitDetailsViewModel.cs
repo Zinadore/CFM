@@ -131,11 +131,12 @@ namespace CFM.UnitModule.ViewModels
             //TestUnit = await _context.Units.Include(unit => unit.Teachers).FirstAsync(u => u.Id == currentId);
             using (_contextFactory.CreateReadOnly())
             {
-                CurrentUnit = await _unitRepository.FindAsync(u => u.Id == currentId, includeProperties: i => i.Teachers);
-                if(CurrentUnit == null)
-                    _applicationCommands.NavigateCommand.Execute(typeof(UnitsView).FullName);
-                Loading = false;
+                CurrentUnit = await _unitRepository.FindAsync(u => u.Id == currentId, i => i.Teachers,
+                        i => i.Assignments);
             }
+            if (CurrentUnit == null)
+                _applicationCommands.NavigateCommand.Execute(typeof(UnitsView).FullName);
+            Loading = false; 
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

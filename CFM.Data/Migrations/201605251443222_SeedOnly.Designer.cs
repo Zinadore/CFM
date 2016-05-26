@@ -7,13 +7,13 @@ namespace CFM.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class assignment_entity_added : IMigrationMetadata
+    public sealed partial class SeedOnly : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(assignment_entity_added));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(SeedOnly));
         
         string IMigrationMetadata.Id
         {
-            get { return "201605241424324_assignment_entity_added"; }
+            get { return "201605251443222_SeedOnly"; }
         }
         
         string IMigrationMetadata.Source

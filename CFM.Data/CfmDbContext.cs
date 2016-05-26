@@ -31,7 +31,7 @@ namespace CFM.Data
                 .WithMany();
             modelBuilder.Entity<Unit>()
                 .HasMany(u => u.Assignments)
-                .WithOptional();
+                .WithOptional(a => a.Unit);
         }
     } 
 }

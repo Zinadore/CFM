@@ -37,9 +37,21 @@ namespace CFM.AssignmentModule.ViewModels
                                              .ObservesProperty(() => Deadline);
         }
 
-        private void Save()
+        private async void Save()
         {
-            
+            var newAssignment = new Assignment
+            {
+                Title = Title,
+                Unit = SelectedUnit,
+                Type = SelectedType,
+                Deadline = Deadline
+            };
+            using (var db = _contextFactory.Create())
+            {
+                _assignmentRepository.Add(newAssignment);
+                await db.SaveChangesAsync();
+            }
+            Close();
         }
 
         private bool CanSave()

@@ -9,6 +9,7 @@ namespace CFM.Infrastructure.Interfaces
     {
         ICollection<TObject> GetAll();
         Task<ICollection<TObject>> GetAllAsync();
+        Task<ICollection<TObject>> GetAllAsync(params Expression<Func<TObject, object>>[] includeProperties);
         TObject Get(int id);
         TObject Get(int id, params Expression<Func<TObject, object>>[] includeProperties);
         Task<TObject> GetAsync(int id);
