@@ -30,6 +30,7 @@ namespace CFM.AssignmentModule
             base.Initialize();
             RegisterViews();
             _flyoutManager.RegisterFlyout<NewAssignmentFlyoutView>(FlyoutNames.NewAssignmentFlyout, RegionNames.FlyoutRegion);
+            _flyoutManager.RegisterFlyout<NewGoalFlyoutView>(FlyoutNames.GoalFlyout, RegionNames.FlyoutRegion);
         }
 
         protected override void RegisterViews()

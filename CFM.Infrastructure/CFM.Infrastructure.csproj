@@ -101,6 +101,7 @@
     <Compile Include="Constants\WindowNames.cs" />
     <Compile Include="Events\AssignmentEvents.cs" />
     <Compile Include="Events\FeedbackEvents.cs" />
+    <Compile Include="Events\GoalEvents.cs" />
     <Compile Include="Events\ProfessorAddedEvent.cs" />
     <Compile Include="Events\ProfessorUpdatedEvent.cs" />
     <Compile Include="Events\UnitEvents.cs" />
@@ -117,8 +118,10 @@
     <Compile Include="RegionAdapters\StackPanelRegionAdapter.cs" />
     <Compile Include="Repositories\AssignmentRepository.cs" />
     <Compile Include="Repositories\FeedbackRepository.cs" />
+    <Compile Include="Repositories\GoalRepository.cs" />
     <Compile Include="Repositories\IAssignmentRepository.cs" />
     <Compile Include="Repositories\IFeedbackRepository.cs" />
+    <Compile Include="Repositories\IGoalRepository.cs" />
     <Compile Include="Repositories\IProfessorRepository.cs" />
     <Compile Include="Repositories\IUnitRepository.cs" />
     <Compile Include="Repositories\ProfessorRepository.cs" />

@@ -55,6 +55,7 @@ namespace CFM.Shell
             Container.RegisterType<IUnitRepository, UnitRepository>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IAssignmentRepository, AssignmentRepository>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IFeedbackRepository, FeedbackRepository>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<IGoalRepository, GoalRepository>(new ContainerControlledLifetimeManager());
             // Application commands
             Container.RegisterType<IApplicationCommands, ApplicationCommandsProxy>(new ContainerControlledLifetimeManager());
            

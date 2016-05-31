@@ -29,6 +29,7 @@ namespace CFM.AssignmentModule.ViewModels
         private readonly IApplicationCommands _applicationCommands;
         private readonly IDialogService _dialogService;
         private readonly IFeedbackRepository _feedbackRepository;
+        private readonly IGoalRepository _goalRepository;
         private int lastDeletedId;
         private int currentId;
 
@@ -36,12 +37,14 @@ namespace CFM.AssignmentModule.ViewModels
         public DelegateCommand DeleteCommand { get; private set; }
         public DelegateCommand<int?> NewFeedback { get; private set; }
         public DelegateCommand<int?> FeedbackDetailsCommand { get; private set; }
-        public DelegateCommand<int?> DeleteFeedbackCommand { get; private set; } 
+        public DelegateCommand<int?> DeleteFeedbackCommand { get; private set; }
+        public DelegateCommand<int?> NewGoalCommand { get; private set; }
+        public DelegateCommand<int?> DeleteGoalCommand { get; private set; }
 
 
         public AssignmentDetailsViewModel(IDbContextScopeFactory contextFactory, IAssignmentRepository assignmentRepository,
                 IFlyoutManager flyoutManager, IApplicationCommands applicationCommands, IDialogService dialogService,
-                IFeedbackRepository feedbackRepository, IEventAggregator eventAggregator)
+                IFeedbackRepository feedbackRepository, IEventAggregator eventAggregator, IGoalRepository goalRepository)
         {
             _contextFactory = contextFactory;
             _assignmentRepository = assignmentRepository;
@@ -49,15 +52,16 @@ namespace CFM.AssignmentModule.ViewModels
             _applicationCommands = applicationCommands;
             _dialogService = dialogService;
             _feedbackRepository = feedbackRepository;
+            _goalRepository = goalRepository;
             EditCommand = new DelegateCommand(Edit);
             DeleteCommand = new DelegateCommand(Delete);
             NewFeedback = new DelegateCommand<int?>(OpenFeedback);
             FeedbackDetailsCommand = new DelegateCommand<int?>(FeedbackDetails);
             DeleteFeedbackCommand = new DelegateCommand<int?>(DeleteFeedback);
+            NewGoalCommand = new DelegateCommand<int?>(OpenGoal);
+            DeleteGoalCommand = new DelegateCommand<int?>(DeleteGoal);
             eventAggregator.GetEvent<FeedbackAddedEvent>().Subscribe(async (i) => await RefreshData());
         }
-
-
 
         #region Command Methods
         private async void DeleteFeedback(int? obj)
@@ -65,6 +69,16 @@ namespace CFM.AssignmentModule.ViewModels
             using (var db = _contextFactory.Create())
             {
                 _feedbackRepository.Delete(obj.Value);
+                await db.SaveChangesAsync();
+            }
+            await RefreshData();
+        }
+
+        private async void DeleteGoal(int? obj)
+        {
+            using (var db = _contextFactory.Create())
+            {
+                _goalRepository.Delete(obj.Value);
                 await db.SaveChangesAsync();
             }
             await RefreshData();
@@ -83,6 +97,14 @@ namespace CFM.AssignmentModule.ViewModels
             fp["fassKey"] = CurrentAssignment.Id;
             fp["feedbackId"] = id.Value;
             _flyoutManager.OpenFlyout(FlyoutNames.FeedbackFlyout, fp);
+        }
+
+        private void OpenGoal(int? id)
+        {
+            FlyoutParameters fp = new FlyoutParameters();
+            fp["fassKey"] = CurrentAssignment.Id;
+            fp["goalId"] = id.Value;
+            _flyoutManager.OpenFlyout(FlyoutNames.GoalFlyout, fp);
         }
 
         private void Edit()
@@ -109,7 +131,7 @@ namespace CFM.AssignmentModule.ViewModels
         {
             using (_contextFactory.CreateReadOnly())
             {
-                CurrentAssignment = await _assignmentRepository.FindAsync(u => u.Id == currentId, i => i.Unit, i => i.Feedbacks);
+                CurrentAssignment = await _assignmentRepository.FindAsync(u => u.Id == currentId, i => i.Unit, i => i.Feedbacks, i => i.Goals);
                 if (CurrentAssignment == null)
                     _applicationCommands.NavigateCommand.Execute(typeof(AssignmentsView).FullName);
                 //Loading = false;

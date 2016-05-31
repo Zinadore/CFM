@@ -14,5 +14,6 @@ namespace CFM.Infrastructure.Constants
         public readonly static string EditUnitFlyout = "EditUnitFlyout";
         public readonly static string NewAssignmentFlyout = "NewAssignmentFlyout";
         public readonly static string FeedbackFlyout = "FeedbackFlyout";
+        public readonly static string GoalFlyout = "GoalFlyout";
     }
 }

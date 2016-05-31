@@ -112,11 +112,15 @@
     <Compile Include="ViewModels\AssignmentDetailsViewModel.cs" />
     <Compile Include="ViewModels\AssignmentsViewModel.cs" />
     <Compile Include="ViewModels\NewAssignmentFlyoutViewModel.cs" />
+    <Compile Include="ViewModels\NewGoalFlyoutViewModel.cs" />
     <Compile Include="Views\AssignmentDetailsView.xaml.cs">
       <DependentUpon>AssignmentDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AssignmentsView.xaml.cs">
       <DependentUpon>AssignmentsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewGoalFlyoutView.xaml.cs">
+      <DependentUpon>NewGoalFlyoutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewAssignmentFlyoutView.xaml.cs">
       <DependentUpon>NewAssignmentFlyoutView.xaml</DependentUpon>
@@ -154,6 +158,10 @@
     <Page Include="Views\AssignmentsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewGoalFlyoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\NewAssignmentFlyoutView.xaml">
       <SubType>Designer</SubType>
