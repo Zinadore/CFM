@@ -7,9 +7,11 @@ using CFM.AssignmentModule.Views;
 using CFM.Data.Models;
 using CFM.Infrastructure;
 using CFM.Infrastructure.Base;
+using CFM.Infrastructure.Events;
 using CFM.Infrastructure.Repositories;
 using Mehdime.Entity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Regions;
 
 namespace CFM.AssignmentModule.ViewModels
@@ -23,12 +25,21 @@ namespace CFM.AssignmentModule.ViewModels
         public DelegateCommand<int?> DetailsCommand { get; private set; } 
 
         public AssignmentsViewModel(IAssignmentRepository assignmentRepository, IDbContextScopeFactory contextFactory,
-               IApplicationCommands applicationCommands)
+               IApplicationCommands applicationCommands, IEventAggregator eventAggregator)
         {
             _assignmentRepository = assignmentRepository;
             _contextFactory = contextFactory;
             _applicationCommands = applicationCommands;
+            eventAggregator.GetEvent<AssignmentAddedEvent>().Subscribe(RefreshView);
             DetailsCommand = new DelegateCommand<int?>(ShowDetails);
+        }
+
+        private async void RefreshView(int? obj)
+        {
+            using (_contextFactory.CreateReadOnly())
+            {
+                AllAssignments = FilteredCollection = await _assignmentRepository.GetAllAsync(a => a.Unit);
+            }
         }
 
         private void ShowDetails(int? id)

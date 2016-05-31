@@ -66,8 +66,18 @@
     <Compile Include="Migrations\201605251443222_SeedOnly.Designer.cs">
       <DependentUpon>201605251443222_SeedOnly.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605310803001_added_feedback.cs" />
+    <Compile Include="Migrations\201605310803001_added_feedback.Designer.cs">
+      <DependentUpon>201605310803001_added_feedback.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605311451577_Added_Goals.cs" />
+    <Compile Include="Migrations\201605311451577_Added_Goals.Designer.cs">
+      <DependentUpon>201605311451577_Added_Goals.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
+    <Compile Include="Models\Feedback.cs" />
+    <Compile Include="Models\Goal.cs" />
     <Compile Include="Models\Professor.cs" />
     <Compile Include="Models\Unit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -82,6 +92,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605251443222_SeedOnly.resx">
       <DependentUpon>201605251443222_SeedOnly.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605310803001_added_feedback.resx">
+      <DependentUpon>201605310803001_added_feedback.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605311451577_Added_Goals.resx">
+      <DependentUpon>201605311451577_Added_Goals.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

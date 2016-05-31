@@ -54,6 +54,7 @@ namespace CFM.Shell
             Container.RegisterType<IProfessorRepository, ProfessorRepository>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IUnitRepository, UnitRepository>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IAssignmentRepository, AssignmentRepository>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<IFeedbackRepository, FeedbackRepository>(new ContainerControlledLifetimeManager());
             // Application commands
             Container.RegisterType<IApplicationCommands, ApplicationCommandsProxy>(new ContainerControlledLifetimeManager());
            
@@ -63,9 +64,10 @@ namespace CFM.Shell
         {
             base.ConfigureModuleCatalog();
             ModuleCatalog moduleCatalog = (ModuleCatalog)this.ModuleCatalog;
+            moduleCatalog.AddModule(typeof(AssignmentModule.AssignmentModule));
             moduleCatalog.AddModule(typeof(UnitModule.UnitModule));
             moduleCatalog.AddModule(typeof(ProfessorModule.ProfessorModule));
-            moduleCatalog.AddModule(typeof(AssignmentModule.AssignmentModule));
+            moduleCatalog.AddModule(typeof(FeedbackModule.FeedbackModule));
         }
 
         protected override RegionAdapterMappings ConfigureRegionAdapterMappings()

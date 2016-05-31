@@ -21,7 +21,8 @@ namespace CFM.Data
         public DbSet<Professor> Professors { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<Assignment> Assignments { get; set; }
-
+        public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<Goal> Goals { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -32,6 +33,12 @@ namespace CFM.Data
             modelBuilder.Entity<Unit>()
                 .HasMany(u => u.Assignments)
                 .WithOptional(a => a.Unit);
+            modelBuilder.Entity<Assignment>()
+                .HasMany(a => a.Feedbacks)
+                .WithRequired(f => f.Assignment);
+            modelBuilder.Entity<Assignment>()
+                .HasMany(a => a.Goals)
+                .WithRequired(g => g.Assignment);
         }
     } 
 }

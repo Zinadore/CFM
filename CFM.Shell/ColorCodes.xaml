@@ -4,4 +4,5 @@
     <SolidColorBrush Color="DarkOrchid" x:Key="ProfessorColorBrush"></SolidColorBrush>
     <SolidColorBrush Color="Coral" x:Key="AssignmentColorBrush"></SolidColorBrush>
     <SolidColorBrush Color="Thistle" x:Key="UnitColorBrush"></SolidColorBrush>
+    <SolidColorBrush Color="DeepPink" x:Key="FeedbackColorBrush"></SolidColorBrush>
 </ResourceDictionary>

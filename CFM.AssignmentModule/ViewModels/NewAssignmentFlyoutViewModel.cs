@@ -6,9 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Bulldog.FlyoutManager;
 using CFM.Data.Models;
+using CFM.Infrastructure.Events;
 using CFM.Infrastructure.Repositories;
 using Mehdime.Entity;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Regions;
 
 namespace CFM.AssignmentModule.ViewModels
@@ -18,14 +20,17 @@ namespace CFM.AssignmentModule.ViewModels
         private readonly IAssignmentRepository _assignmentRepository;
         private readonly IUnitRepository _unitRepository;
         private readonly IDbContextScopeFactory _contextFactory;
+        private readonly IEventAggregator _eventAggregator;
 
         public DelegateCommand SaveCommand { get; private set; } 
 
-        public NewAssignmentFlyoutViewModel(IAssignmentRepository assignmentRepository, IUnitRepository unitRepository, IDbContextScopeFactory contextFactory)
+        public NewAssignmentFlyoutViewModel(IAssignmentRepository assignmentRepository, IUnitRepository unitRepository, IDbContextScopeFactory contextFactory,
+                IEventAggregator eventAggregator)
         {
             _assignmentRepository = assignmentRepository;
             _unitRepository = unitRepository;
             _contextFactory = contextFactory;
+            _eventAggregator = eventAggregator;
             Position = FlyoutPosition.Left;
             Theme = FlyoutTheme.Dark;
             Deadline = DateTime.Now;
@@ -48,9 +53,10 @@ namespace CFM.AssignmentModule.ViewModels
             };
             using (var db = _contextFactory.Create())
             {
-                _assignmentRepository.Add(newAssignment);
+                newAssignment = _assignmentRepository.Add(newAssignment);
                 await db.SaveChangesAsync();
             }
+            _eventAggregator.GetEvent<AssignmentAddedEvent>().Publish(newAssignment.Id);
             Close();
         }
 
@@ -122,7 +128,7 @@ namespace CFM.AssignmentModule.ViewModels
 
         #region FlyoutBase Implementation
 
-        protected async override void OnOpening(FlyoutParameters flyoutParameters)
+        protected override async void OnOpening(FlyoutParameters flyoutParameters)
         {
             base.OnOpening(flyoutParameters);
             using (_contextFactory.CreateReadOnly())

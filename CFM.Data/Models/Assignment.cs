@@ -17,5 +17,7 @@ namespace CFM.Data.Models
         public string Title { get; set; }
         
         public virtual Unit Unit { get; set; }
+        public virtual ICollection<Feedback> Feedbacks { get; set; } 
+        public virtual ICollection<Goal> Goals { get; set; }
     }
 }

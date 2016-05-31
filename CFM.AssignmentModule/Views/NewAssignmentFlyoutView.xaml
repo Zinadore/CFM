@@ -27,7 +27,8 @@
         <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         <Label Grid.Row="1" Grid.Column="0">Type</Label>
         <ComboBox Grid.Row="1" Grid.Column="2"
-                  SelectedValue="{Binding SelectedType}">
+                  SelectedValue="{Binding SelectedType, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedValuePath="Content">
             <ComboBoxItem>Report</ComboBoxItem>
             <ComboBoxItem>Assessed Lab</ComboBoxItem>
             <ComboBoxItem>Something Else</ComboBoxItem>
@@ -35,7 +36,7 @@
         <Label Grid.Row="2" Grid.Column="0">Unit</Label>
         <ComboBox Grid.Row="2" Grid.Column="2"
                   ItemsSource="{Binding AvailableUnits}"
-                  SelectedItem="{Binding SelectedUnit}">
+                  SelectedItem="{Binding SelectedUnit, UpdateSourceTrigger=PropertyChanged}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <Label Content="{Binding Title}"></Label>
@@ -43,9 +44,9 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
         <Label Grid.Row="3" Grid.Column="0">Deadline</Label>
-        <metro:DateTimePicker Grid.Row="3" Grid.Column="2" SelectedDate="{Binding Deadline}">
+        <DatePicker Grid.Row="3" Grid.Column="2" SelectedDate="{Binding Deadline, UpdateSourceTrigger=PropertyChanged}">
             
-        </metro:DateTimePicker>
+        </DatePicker>
         <Button Grid.Row="4" Grid.Column="2"
                 Command="{Binding SaveCommand}">Save</Button>
     </Grid>

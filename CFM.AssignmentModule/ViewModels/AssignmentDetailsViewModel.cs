@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,8 +8,14 @@ using Bulldog.FlyoutManager;
 using CFM.AssignmentModule.Views;
 using CFM.Data.Models;
 using CFM.Infrastructure;
+using CFM.Infrastructure.Constants;
+using CFM.Infrastructure.Events;
+using CFM.Infrastructure.Interfaces;
 using CFM.Infrastructure.Repositories;
+using MahApps.Metro.Controls.Dialogs;
 using Mehdime.Entity;
+using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 
@@ -20,17 +27,100 @@ namespace CFM.AssignmentModule.ViewModels
         private readonly IAssignmentRepository _assignmentRepository;
         private readonly IFlyoutManager _flyoutManager;
         private readonly IApplicationCommands _applicationCommands;
+        private readonly IDialogService _dialogService;
+        private readonly IFeedbackRepository _feedbackRepository;
         private int lastDeletedId;
         private int currentId;
 
+        public DelegateCommand EditCommand { get; private set; } 
+        public DelegateCommand DeleteCommand { get; private set; }
+        public DelegateCommand<int?> NewFeedback { get; private set; }
+        public DelegateCommand<int?> FeedbackDetailsCommand { get; private set; }
+        public DelegateCommand<int?> DeleteFeedbackCommand { get; private set; } 
+
+
         public AssignmentDetailsViewModel(IDbContextScopeFactory contextFactory, IAssignmentRepository assignmentRepository,
-                IFlyoutManager flyoutManager, IApplicationCommands applicationCommands)
+                IFlyoutManager flyoutManager, IApplicationCommands applicationCommands, IDialogService dialogService,
+                IFeedbackRepository feedbackRepository, IEventAggregator eventAggregator)
         {
             _contextFactory = contextFactory;
             _assignmentRepository = assignmentRepository;
             _flyoutManager = flyoutManager;
             _applicationCommands = applicationCommands;
+            _dialogService = dialogService;
+            _feedbackRepository = feedbackRepository;
+            EditCommand = new DelegateCommand(Edit);
+            DeleteCommand = new DelegateCommand(Delete);
+            NewFeedback = new DelegateCommand<int?>(OpenFeedback);
+            FeedbackDetailsCommand = new DelegateCommand<int?>(FeedbackDetails);
+            DeleteFeedbackCommand = new DelegateCommand<int?>(DeleteFeedback);
+            eventAggregator.GetEvent<FeedbackAddedEvent>().Subscribe(async (i) => await RefreshData());
         }
+
+
+
+        #region Command Methods
+        private async void DeleteFeedback(int? obj)
+        {
+            using (var db = _contextFactory.Create())
+            {
+                _feedbackRepository.Delete(obj.Value);
+                await db.SaveChangesAsync();
+            }
+            await RefreshData();
+        }
+
+        private void FeedbackDetails(int? id)
+        {
+            var uriQuery = new NavigationParameters();
+            uriQuery.Add("feedbackId", id);
+            _applicationCommands.NavigateCommand.Execute(ViewNames.FeedbackDetailsView + uriQuery);
+        }
+
+        private void OpenFeedback(int? id)
+        {
+            FlyoutParameters fp = new FlyoutParameters();
+            fp["fassKey"] = CurrentAssignment.Id;
+            fp["feedbackId"] = id.Value;
+            _flyoutManager.OpenFlyout(FlyoutNames.FeedbackFlyout, fp);
+        }
+
+        private void Edit()
+        {
+
+        }
+
+        private async void Delete()
+        {
+            var controler = await _dialogService.ShowMessageAsnyc("", "Are you sure you want to delete this entry?", MessageDialogStyle.AffirmativeAndNegative);
+            if (controler == MessageDialogResult.Affirmative)
+            {
+                using (var dbc = _contextFactory.Create())
+                {
+                    _assignmentRepository.Delete(currentId);
+                    await dbc.SaveChangesAsync();
+                }
+                lastDeletedId = currentId;
+                _applicationCommands.NavigateCommand.Execute(typeof(AssignmentsView).FullName);
+            }
+        }
+
+        private async Task RefreshData()
+        {
+            using (_contextFactory.CreateReadOnly())
+            {
+                CurrentAssignment = await _assignmentRepository.FindAsync(u => u.Id == currentId, i => i.Unit, i => i.Feedbacks);
+                if (CurrentAssignment == null)
+                    _applicationCommands.NavigateCommand.Execute(typeof(AssignmentsView).FullName);
+                //Loading = false;
+                DaysLeft = (CurrentAssignment.Deadline - DateTime.Now).Days;
+                DeadlineText = (CurrentAssignment.Deadline > DateTime.Now) ?
+                    CurrentAssignment.Deadline.ToShortDateString() + "\t (" + DaysLeft + " days left)"
+                    : CurrentAssignment.Deadline.ToShortDateString() + "\t (past deadline)";
+            }
+        }
+        #endregion
+
         #region Bindable Properties
 
         private Assignment _currentAssignment;
@@ -47,8 +137,8 @@ namespace CFM.AssignmentModule.ViewModels
             set { SetProperty(ref _deadlineText, value); }
         }
 
-        private double _daysLeft;
-        public double DaysLeft
+        private int _daysLeft;
+        public int DaysLeft
         {
             get { return _daysLeft; }
             set { SetProperty(ref _daysLeft, value); }
@@ -69,15 +159,7 @@ namespace CFM.AssignmentModule.ViewModels
                 _applicationCommands.NavigateCommand.Execute(typeof(AssignmentsView).FullName);
             }
             //TestUnit = await _context.Units.Include(unit => unit.Teachers).FirstAsync(u => u.Id == currentId);
-            using (_contextFactory.CreateReadOnly())
-            {
-                CurrentAssignment = await _assignmentRepository.FindAsync(u => u.Id == currentId, includeProperties: i => i.Unit);
-                if (CurrentAssignment == null)
-                    _applicationCommands.NavigateCommand.Execute(typeof(AssignmentsView).FullName);
-                //Loading = false;
-                DaysLeft = (CurrentAssignment.Deadline - DateTime.Now).TotalDays;
-                DeadlineText = (CurrentAssignment.Deadline > DateTime.Now) ? CurrentAssignment.Deadline + "\t (" + DaysLeft + " days left)" : CurrentAssignment.Deadline + "\t (past deadline)";
-            }
+            await RefreshData();
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)

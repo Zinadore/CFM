@@ -10,7 +10,7 @@ namespace CFM.AssignmentModule
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             int days = System.Convert.ToInt32(value);
-            if (days > 0 && days <= 3)
+            if (days >= 0 && days <= 3)
                 return Colors.Red;
             if (days > 3 && days <= 5)
                 return Colors.DarkOrange;

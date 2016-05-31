@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Bulldog.FlyoutManager;
 using CFM.AssignmentModule.Views;
-using CFM.Data;
 using CFM.Data.Models;
 using CFM.Infrastructure;
 using CFM.Infrastructure.Constants;

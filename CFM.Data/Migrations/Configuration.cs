@@ -63,6 +63,16 @@ namespace CFM.Data.Migrations
                 a => a.Id,
                 assignments
             );
+
+            Feedback[] feedbacks = new Feedback[1]
+            {
+                new Feedback {Description = "Hello i am the first feedback", Assignment = assignments[0]} 
+            };
+
+            context.Feedbacks.AddOrUpdate(
+                f => f.Id,
+                feedbacks    
+            );
         }
     }
 }

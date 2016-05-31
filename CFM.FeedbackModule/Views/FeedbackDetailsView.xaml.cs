@@ -13,20 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CFM.AssignmentModule.Views
+namespace CFM.FeedbackModule.Views
 {
     /// <summary>
-    /// Interaction logic for NewAssignmentFlyoutView.xaml
+    /// Interaction logic for FeedbackDetailsView.xaml
     /// </summary>
-    public partial class NewAssignmentFlyoutView : UserControl
+    public partial class FeedbackDetailsView : UserControl
     {
-        public NewAssignmentFlyoutView()
+        public FeedbackDetailsView()
         {
             InitializeComponent();
-        }
-
-        private void OnSelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
         }
     }
 }
