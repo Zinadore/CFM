@@ -47,7 +47,9 @@
         <DatePicker Grid.Row="3" Grid.Column="2" SelectedDate="{Binding Deadline, UpdateSourceTrigger=PropertyChanged}">
             
         </DatePicker>
-        <Button Grid.Row="4" Grid.Column="2"
+        <Button Grid.Row="4" Grid.Column="2" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
                 Command="{Binding SaveCommand}">Save</Button>
     </Grid>
 </UserControl>

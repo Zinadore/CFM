@@ -47,12 +47,19 @@ namespace CFM.FeedbackModule.ViewModels
                 await db.SaveChangesAsync();
             }
             _eventAggregator.GetEvent<FeedbackAddedEvent>().Publish(CurrentFeedback.Id);
+            ClearData();
             Close();
         }
 
         private bool CanSave()
         {
             return !String.IsNullOrWhiteSpace(Description);
+        }
+
+        private void ClearData()
+        {
+            CurrentFeedback = new Feedback();
+            CurrentAssignment = new Assignment();
         }
         #endregion
 

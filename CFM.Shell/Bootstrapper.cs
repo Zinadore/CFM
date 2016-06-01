@@ -14,6 +14,7 @@ using CFM.Infrastructure.Interfaces;
 using CFM.Infrastructure.RegionAdapters;
 using CFM.Infrastructure.Repositories;
 using CFM.Infrastructure.Services;
+using CFM.Shell.Navigation;
 using CFM.Shell.Views;
 using MahApps.Metro.Controls;
 using Mehdime.Entity;
@@ -39,7 +40,7 @@ namespace CFM.Shell
 
             // Register services
             this.RegisterServices();
-
+            this.RegisterViews();
             Application.Current.MainWindow.Show();
         }
 
@@ -58,7 +59,6 @@ namespace CFM.Shell
             Container.RegisterType<IGoalRepository, GoalRepository>(new ContainerControlledLifetimeManager());
             // Application commands
             Container.RegisterType<IApplicationCommands, ApplicationCommandsProxy>(new ContainerControlledLifetimeManager());
-           
         }
 
         protected override void ConfigureModuleCatalog()
@@ -79,6 +79,13 @@ namespace CFM.Shell
             return mappings;
         }
 
+        public override void Run(bool runWithDefaultConfiguration)
+        {
+            base.Run(runWithDefaultConfiguration);
+            var manager = Container.Resolve<IRegionManager>();
+            manager.RequestNavigate(RegionNames.MainRegion, typeof(HomeView).FullName);
+        }
+
         private void RegisterServices()
         {
             // Flyout services
@@ -86,6 +93,11 @@ namespace CFM.Shell
             Container.RegisterInstance<IFlyoutService>(Container.Resolve<FlyoutService>());
             // Dialog services
             Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
+        }
+
+        private void RegisterViews()
+        {
+            Container.RegisterTypeForNavigation<HomeView>(typeof(HomeView).FullName);
         }
     }
 }

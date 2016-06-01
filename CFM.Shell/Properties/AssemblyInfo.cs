@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CFM.MainWindow")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("City's Feedback Manager")]
+[assembly: AssemblyDescription("An application developed for CITY's students to manage the feedback they receive.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CFM.MainWindow")]
+[assembly: AssemblyProduct("CFM")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

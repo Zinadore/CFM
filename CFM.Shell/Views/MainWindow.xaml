@@ -26,7 +26,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel prism:RegionManager.RegionName="{x:Static infConstants:RegionNames.NavigationRegion}"
                         Grid.Row="0"
@@ -53,7 +52,6 @@
                             BorderBrush="{DynamicResource AccentColorBrush4}"
                             BorderThickness="0,3,0,0"
                             prism:RegionManager.RegionName="{x:Static infConstants:RegionNames.MainRegion}"/>
-            <TextBlock Grid.Row="2" Grid.Column="1">Do i need this?</TextBlock>
         </Grid>
     </metro:MetroContentControl>
 </metro:MetroWindow>

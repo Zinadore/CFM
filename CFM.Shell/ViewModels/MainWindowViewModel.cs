@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using CFM.Infrastructure;
 using CFM.Infrastructure.Constants;
+using CFM.Shell.Navigation;
+using CFM.Shell.Views;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -26,6 +28,8 @@ namespace CFM.Shell.ViewModels
             GoBackCommand = new DelegateCommand(GoBack, CanGoBack);
             applicationCommands.NavigateCommand.RegisterCommand(NavigateCommand);
             applicationCommands.GoBackCommand.RegisterCommand(GoBackCommand);
+            _regionManager.RequestNavigate(RegionNames.MainRegion, typeof(HomeView).FullName);
+            _regionManager.RegisterViewWithRegion(RegionNames.NavigationRegion, typeof(HomeButton));
         }
 
         private bool CanGoBack()

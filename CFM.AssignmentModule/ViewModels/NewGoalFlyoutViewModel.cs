@@ -52,7 +52,13 @@ namespace CFM.AssignmentModule.ViewModels
                 await db.SaveChangesAsync();
             }
             _eventAggregator.GetEvent<GoalAddedEvent>().Publish(CurrentGoal.Id);
+            ClearData();
             Close();
+        }
+
+        private void ClearData()
+        {
+            Description = "";
         }
         #endregion
 

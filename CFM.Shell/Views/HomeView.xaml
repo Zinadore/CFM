@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="CFM.Shell.Views.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CFM.Shell.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Height="35" Width="200"
+                    Command="{Binding FeedbackCommand}"
+                    Background="{StaticResource FeedbackColorBrush}">I got new Feedback!</Button>
+            <ComboBox ItemsSource="{Binding AllAssignments}" 
+                      DisplayMemberPath="Title" 
+                      SelectedItem="{Binding SelectedAssignment, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+        </StackPanel>
+        <Button Grid.Row="1" HorizontalAlignment="Center" 
+                Height="35" Width="200"
+                Command="{Binding AssignmentCommand}"
+                Background="{StaticResource AssignmentColorBrush}">I got new Coursework!</Button>
+        <Label Grid.Row="2">Upcoming assignments:</Label>
+        <ListView Grid.Row="3"
+                  ItemsSource="{Binding UpcomingAssignments}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Title}"></TextBlock>
+                                <TextBlock xml:space="preserve">  |</TextBlock>
+                                <TextBlock Text="{Binding Unit.Title}"></TextBlock>
+                                <TextBlock xml:space="preserve">  |</TextBlock>
+                                <TextBlock Text="{Binding Deadline, StringFormat=dd/MM/yyyy}"></TextBlock>
+                            </StackPanel>
+                        </Label>
+                        <Button Grid.Column="1" MaxWidth="50" Width="Auto"
+                                        Background="{StaticResource AssignmentColorBrush}"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                            AncestorType={x:Type UserControl}}, Path=DataContext.ShowAssignmentCommand}"
+                                        CommandParameter="{Binding Id}">
+                            <metro:PackIconModern Kind="Eye" />
+                        </Button>
+                    </Grid>
+                    
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

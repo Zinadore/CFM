@@ -105,6 +105,7 @@
     <Compile Include="Events\ProfessorAddedEvent.cs" />
     <Compile Include="Events\ProfessorUpdatedEvent.cs" />
     <Compile Include="Events\UnitEvents.cs" />
+    <Compile Include="HelperMethods\AssignmentHelperMethods.cs" />
     <Compile Include="Interfaces\IBaseService.cs" />
     <Compile Include="Base\PrismModuleBase.cs" />
     <Compile Include="Constants\FlyoutNames.cs" />
