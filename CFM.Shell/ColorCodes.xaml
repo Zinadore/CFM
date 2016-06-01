@@ -1,11 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:CFM.Shell">
-    <SolidColorBrush Color="DarkOrchid" x:Key="ProfessorColorBrush"></SolidColorBrush>
-    <SolidColorBrush Color="Coral" x:Key="AssignmentColorBrush"></SolidColorBrush>
-    <SolidColorBrush Color="Thistle" x:Key="UnitColorBrush"></SolidColorBrush>
-    <SolidColorBrush Color="DeepPink" x:Key="FeedbackColorBrush"></SolidColorBrush>
-    <SolidColorBrush Color="Olive" x:Key="GoalColorBrush"></SolidColorBrush>
+    <SolidColorBrush Color="#FFA541" x:Key="ProfessorColorBrush"></SolidColorBrush>
+    <SolidColorBrush Color="#FFBA41" x:Key="UnitColorBrush"></SolidColorBrush>
+    
+    
+    <SolidColorBrush Color="#7ED7FE" x:Key="AssignmentColorBrush"></SolidColorBrush>
+    <SolidColorBrush Color="#41B1E1" x:Key="FeedbackColorBrush"></SolidColorBrush>
+    <SolidColorBrush Color="#3AE2BC" x:Key="GoalColorBrush"></SolidColorBrush>
+
+
     <SolidColorBrush Color="LightGoldenrodYellow" x:Key="EditColorBrush"></SolidColorBrush>
-    <SolidColorBrush Color="GreenYellow" x:Key="DeleteColorBrush"></SolidColorBrush>
+    <SolidColorBrush Color="#F1002A" x:Key="DeleteColorBrush"></SolidColorBrush>
 </ResourceDictionary>
