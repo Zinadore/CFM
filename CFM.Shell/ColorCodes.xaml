@@ -6,4 +6,6 @@
     <SolidColorBrush Color="Thistle" x:Key="UnitColorBrush"></SolidColorBrush>
     <SolidColorBrush Color="DeepPink" x:Key="FeedbackColorBrush"></SolidColorBrush>
     <SolidColorBrush Color="Olive" x:Key="GoalColorBrush"></SolidColorBrush>
+    <SolidColorBrush Color="LightGoldenrodYellow" x:Key="EditColorBrush"></SolidColorBrush>
+    <SolidColorBrush Color="GreenYellow" x:Key="DeleteColorBrush"></SolidColorBrush>
 </ResourceDictionary>

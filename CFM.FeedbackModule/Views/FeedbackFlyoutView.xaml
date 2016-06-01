@@ -8,6 +8,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              MinWidth="400"
+             MaxWidth="450"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Grid.Margin="5">
         <Grid.RowDefinitions>

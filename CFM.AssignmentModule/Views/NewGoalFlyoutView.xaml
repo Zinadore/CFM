@@ -39,6 +39,7 @@
                      AcceptsReturn="True" 
                      VerticalAlignment="Stretch"
                      MinLines="4"
+                     MaxLines="15"
                      Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         </StackPanel>
         

@@ -61,6 +61,7 @@ namespace CFM.AssignmentModule.ViewModels
             NewGoalCommand = new DelegateCommand<int?>(OpenGoal);
             DeleteGoalCommand = new DelegateCommand<int?>(DeleteGoal);
             eventAggregator.GetEvent<FeedbackAddedEvent>().Subscribe(async (i) => await RefreshData());
+            eventAggregator.GetEvent<GoalAddedEvent>().Subscribe(async (i) => await RefreshData());
         }
 
         #region Command Methods

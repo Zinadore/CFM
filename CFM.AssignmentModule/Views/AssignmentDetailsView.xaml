@@ -46,6 +46,7 @@
             </TextBlock>
             <StackPanel  Grid.Row="0" Grid.Column="1" Grid.RowSpan="6" StackPanel.Margin="0,0,5,0">
                 <Label FontSize="14">Goals</Label>
+                <!--GOALS LIST VIEW-->
                 <ListView ItemsSource="{Binding CurrentAssignment.Goals}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -57,17 +58,17 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0">
-                                    <TextBlock Text="{Binding Description}" TextTrimming="CharacterEllipsis"></TextBlock>
+                                    <TextBlock Text="{Binding Description}" TextTrimming="CharacterEllipsis" MaxWidth="325" Height="20"></TextBlock>
                                 </Label>
                                 <Button Grid.Column="1" MaxWidth="50" Width="Auto"
-                                        Background="Crimson"
+                                        Background="{StaticResource DeleteColorBrush}"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                                             AncestorType={x:Type UserControl}}, Path=DataContext.DeleteGoalCommand}"
                                         CommandParameter="{Binding Id}">
                                     <metro:PackIconModern Kind="Delete" />
                                 </Button>
                                 <Button Grid.Column="2" MaxWidth="50" Width="Auto"
-                                        Background="LightGoldenrodYellow"
+                                        Background="{StaticResource EditColorBrush}"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                                             AncestorType={x:Type UserControl}}, Path=DataContext.NewGoalCommand}"
                                         CommandParameter="{Binding Id}">
@@ -96,17 +97,17 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0">
-                                    <TextBlock Text="{Binding Description}" TextTrimming="CharacterEllipsis"></TextBlock>
+                                    <TextBlock Text="{Binding Description}" TextTrimming="CharacterEllipsis" MaxWidth="325" Height="20"></TextBlock>
                                 </Label>
                                 <Button Grid.Column="1" MaxWidth="50" Width="Auto"
-                                        Background="Crimson"
+                                        Background="{StaticResource DeleteColorBrush}"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                                             AncestorType={x:Type UserControl}}, Path=DataContext.DeleteFeedbackCommand}"
                                         CommandParameter="{Binding Id}">
                                     <metro:PackIconModern Kind="Delete" />
                                 </Button>
                                 <Button Grid.Column="2" MaxWidth="50" Width="Auto"
-                                        Background="LightGoldenrodYellow"
+                                        Background="{StaticResource EditColorBrush}"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                                             AncestorType={x:Type UserControl}}, Path=DataContext.NewFeedback}"
                                         CommandParameter="{Binding Id}">
@@ -128,8 +129,8 @@
         </Grid>
         <!--Buttons-->
         <StackPanel Grid.Column="1">
-            <Button Command="{Binding DeleteCommand}" Background="Crimson">Delete</Button>
-            <Button Command="{Binding EditCommand}" Background="LightGoldenrodYellow">Edit</Button>
+            <Button Command="{Binding DeleteCommand}" Background="{StaticResource DeleteColorBrush}">Delete</Button>
+            <Button Command="{Binding EditCommand}" Background="{StaticResource EditColorBrush}">Edit</Button>
             <Button Command="{Binding NewFeedback}" Background="{StaticResource FeedbackColorBrush}">
                 <Button.CommandParameter>
                     <sys:Int32>0</sys:Int32>

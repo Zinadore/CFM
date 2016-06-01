@@ -27,6 +27,7 @@
         <Button Grid.Row="0" 
                 Grid.Column="0"
                 VerticalAlignment="Center"
+                Background="{StaticResource DeleteColorBrush}"
                 Command="{Binding DeleteCommand}">Delete</Button>
 
         <metro:ToggleSwitch Grid.Row="0"
@@ -50,29 +51,37 @@
                                   HorizontalAlignment="Center"></metro:PackIconModern>
             <!--First Name Row-->
             <Label Grid.Row="1"
-                   FontSize="35"
-                   VerticalAlignment="Center">First Name</Label>
+                   FontWeight="Bold"
+                   FontSize="12"
+                   VerticalAlignment="Center">First Name:</Label>
             <TextBlock Grid.Row="2" 
                    VerticalAlignment="Center"
+                   FontSize="35"
                    Visibility="{Binding NormalMode, Converter={StaticResource BooleanToVisibilityConverter }}" 
                    Text="{Binding FirstName}"></TextBlock>
             <TextBox Grid.Row="2" 
                  VerticalAlignment="Center"
+                 FontSize="35"
                  Visibility="{Binding EditMode, Converter={StaticResource BooleanToVisibilityConverter }}"
                  Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             <!--Last Name Row-->
             <Label Grid.Row="3" 
                    Grid.Column="0"
-                   FontSize="35"
-                   VerticalAlignment="Center">Last Name</Label>
-            <TextBlock Grid.Row="4" 
+                   FontSize="12"
+                   Margin="0,10,0,0"
+                   FontWeight="Bold"
+                   VerticalAlignment="Center">Last Name:</Label>
+            <TextBlock Grid.Row="4"
+                       FontSize="35"
                        VerticalAlignment="Center"
                        Visibility="{Binding NormalMode, Converter={StaticResource BooleanToVisibilityConverter }}" 
                        Text="{Binding LastName}"></TextBlock>
             <TextBox Grid.Row="4" 
                      VerticalAlignment="Center"
+                     FontSize="35"
                      Visibility="{Binding EditMode, Converter={StaticResource BooleanToVisibilityConverter }}"
-                     Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                     Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}">
+            </TextBox>
         </Grid>
     </Grid>
 </UserControl>

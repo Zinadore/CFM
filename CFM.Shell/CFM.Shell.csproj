@@ -121,9 +121,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="Views\ShellSettingsFlyout.xaml.cs">
-      <DependentUpon>ShellSettingsFlyout.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
@@ -163,10 +160,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ShellSettingsFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

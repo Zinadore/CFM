@@ -102,8 +102,8 @@
             </Grid>
             <!--Buttons-->
             <StackPanel Grid.Column="1">
-                <Button Command="{Binding DeleteCommand}" Background="Crimson">Delete</Button>
-                <Button Command="{Binding EditCommand}" Background="LightGoldenrodYellow">Edit</Button>
+                <Button Command="{Binding DeleteCommand}" Background="{StaticResource DeleteColorBrush}">Delete</Button>
+                <Button Command="{Binding EditCommand}" Background="{StaticResource EditColorBrush}">Edit</Button>
             </StackPanel>
         </Grid>
     </Grid>

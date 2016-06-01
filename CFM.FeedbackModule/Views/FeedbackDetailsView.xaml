@@ -9,14 +9,43 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <StackPanel>
-            <Label>
-                <TextBlock Text="{Binding CurrentFeedback.Description}" TextTrimming="WordEllipsis"></TextBlock>
-            </Label>
-            <Label Content="{Binding CurrentFeedback.Assignment.Title}"></Label>
-            <Label Content="{Binding CurrentFeedback.Assignment.Unit.Title}"></Label>
-            <ListView ItemsSource="{Binding CurrentFeedback.Assignment.Unit.Teachers}"
-                      DisplayMemberPath="FullName"></ListView>
-        </StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" FontWeight="Bold">Feedback Content:</Label>
+            <ScrollViewer Grid.Row="1" >
+                <TextBlock TextWrapping="Wrap" Text="{Binding CurrentFeedback.Description}"></TextBlock>
+            </ScrollViewer>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <!-- Assignment.Title Unit.Title Unit.Teachers -->
+                <Label Grid.Row="0" Grid.Column="0" FontWeight="Bold">Assignment Title:</Label>
+                <Label Grid.Row="0" Grid.Column="1" Content="{Binding CurrentFeedback.Assignment.Title}"></Label>
+                <Label Grid.Row="1" Grid.Column="0" FontWeight="Bold">Unit Title:</Label>
+                <Label Grid.Row="1" Grid.Column="1" Content="{Binding CurrentFeedback.Assignment.Unit.Title}"></Label>
+                <Label Grid.Row="2" Grid.Column="0" FontWeight="Bold">Professors:</Label>
+                <ListView  Grid.Row="3" 
+                           Grid.Column="0" 
+                           Grid.ColumnSpan="2"
+                           ItemsSource="{Binding CurrentFeedback.Assignment.Unit.Teachers}"
+                           DisplayMemberPath="FullName"></ListView>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>

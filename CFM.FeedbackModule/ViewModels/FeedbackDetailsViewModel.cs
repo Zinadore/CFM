@@ -18,7 +18,7 @@ namespace CFM.FeedbackModule.ViewModels
         private readonly IFeedbackRepository _feedbackRepository;
         private readonly IApplicationCommands _applicationCommands;
 
-        private int currentId, lastDeletedId;
+        private int currentId;
 
         public FeedbackDetailsViewModel(IDbContextScopeFactory contextFactory, IFeedbackRepository feedbackRepository,
                 IApplicationCommands applicationCommands)
@@ -42,18 +42,11 @@ namespace CFM.FeedbackModule.ViewModels
         public async void OnNavigatedTo(NavigationContext navigationContext)
         {
             currentId = Convert.ToInt32(navigationContext.Parameters["feedbackId"]);
-            if (currentId == lastDeletedId)
-            {
-                //_applicationCommands.NavigateCommand.Execute(typeof(UnitsView).FullName);
-            }
-            //TestUnit = await _context.Units.Include(unit => unit.Teachers).FirstAsync(u => u.Id == currentId);
             using (_contextFactory.CreateReadOnly())
             {
                 CurrentFeedback = await _feedbackRepository.GetAsync(currentId, i => i.Assignment, i => i.Assignment.Unit,
                     i => i.Assignment.Unit.Teachers);
             }
-            //if (CurrentFeedback == null)
-               //_applicationCommands.NavigateCommand.Execute(typeof(UnitsView).FullName);
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -63,7 +56,7 @@ namespace CFM.FeedbackModule.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            
+            CurrentFeedback = new Feedback();
         }
         #endregion
     }
