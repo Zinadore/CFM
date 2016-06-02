@@ -53,6 +53,8 @@ namespace CFM.Shell.ViewModels
         private void NewFeedback()
         {
             FlyoutParameters fp = new FlyoutParameters();
+            if (SelectedAssignment == null)
+                return;
             fp["fassKey"] = SelectedAssignment.Id;
             fp["feedbackId"] = 0;
             _flyoutManager.OpenFlyout(FlyoutNames.FeedbackFlyout, fp);
