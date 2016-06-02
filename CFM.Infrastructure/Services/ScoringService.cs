@@ -35,7 +35,7 @@ namespace CFM.Infrastructure.Services
                     f.RelevanceScore += UNIT_SCORE;
 
                 var teachersCount = feedback.Assignment.Unit.Teachers.Intersect(f.Assignment.Unit.Teachers).Count();
-                if(teachersCount < 0)
+                if(teachersCount > 0)
                     f.RelevanceScore += PROF_SCORE * teachersCount;
             }
             var irrelevantFeedback = feedbackList.Where(f => f.RelevanceScore < 1 || f.Id == feedback.Id);
