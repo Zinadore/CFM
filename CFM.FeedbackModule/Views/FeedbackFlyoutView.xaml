@@ -40,6 +40,8 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0">Description</Label>
             <TextBox Grid.Row="1" TextWrapping="Wrap"
+                     MinLines="4"
+                     MaxLines="15"
                      Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
                      AcceptsReturn="True" AcceptsTab="True"
                      VerticalAlignment="Stretch"></TextBox>

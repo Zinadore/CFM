@@ -130,7 +130,7 @@
         <!--Buttons-->
         <StackPanel Grid.Column="1">
             <Button Command="{Binding DeleteCommand}" Background="{StaticResource DeleteColorBrush}">Delete</Button>
-            <Button Command="{Binding EditCommand}" Background="{StaticResource EditColorBrush}">Edit</Button>
+            <!--<Button Command="{Binding EditCommand}" Background="{StaticResource EditColorBrush}">Edit</Button>-->
             <Button Command="{Binding NewFeedback}" Background="{StaticResource FeedbackColorBrush}">
                 <Button.CommandParameter>
                     <sys:Int32>0</sys:Int32>

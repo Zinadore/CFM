@@ -8,7 +8,8 @@
              xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             MinWidth="300"
+             MinWidth="400"
+             MaxWidth="450"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Margin="5">
         <Grid.RowDefinitions>

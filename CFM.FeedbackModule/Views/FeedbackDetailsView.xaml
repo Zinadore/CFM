@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CFM.FeedbackModule.Views"
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
@@ -46,6 +47,52 @@
                            ItemsSource="{Binding CurrentFeedback.Assignment.Unit.Teachers}"
                            DisplayMemberPath="FullName"></ListView>
             </Grid>
+        </Grid>
+        <Grid Grid.Column="1"
+              Margin="5,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label>Related Feedback:</Label>
+            <ListView Grid.Row="1" ItemsSource="{Binding RelevantFeedback}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto"/>
+                                <!--<ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>-->
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0">
+                                <TextBlock Text="{Binding Description}" TextTrimming="CharacterEllipsis" MaxWidth="325" Height="20"></TextBlock>
+                            </Label>
+                            <!--<Button Grid.Column="1" MaxWidth="50" Width="Auto"
+                                        Background="{StaticResource DeleteColorBrush}"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                            AncestorType={x:Type UserControl}}, Path=DataContext.DeleteFeedbackCommand}"
+                                        CommandParameter="{Binding Id}">
+                                <metro:PackIconModern Kind="Delete" />
+                            </Button>
+                            <Button Grid.Column="2" MaxWidth="50" Width="Auto"
+                                        Background="{StaticResource EditColorBrush}"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                            AncestorType={x:Type UserControl}}, Path=DataContext.NewFeedback}"
+                                        CommandParameter="{Binding Id}">
+                                <metro:PackIconModern Kind="DrawPencil" />
+                            </Button>-->
+                            <Button Grid.Column="1" MaxWidth="50" Width="Auto" 
+                                        Background="{StaticResource FeedbackColorBrush}"
+                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                            AncestorType={x:Type UserControl}}, Path=DataContext.FeedbackDetailsCommand}"
+                                        CommandParameter="{Binding Id}">
+                                <metro:PackIconModern Kind="Eye" />
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
     </Grid>
 </UserControl>
