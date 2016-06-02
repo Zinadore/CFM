@@ -57,35 +57,37 @@
                 </TextBox.Style>
             </TextBox>
         </Grid>
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding FilteredCollection}">
-            <ItemsControl.Template>
-                <ControlTemplate>
-                    <WrapPanel  Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
+        <ScrollViewer Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding FilteredCollection}">
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <WrapPanel  Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
                                     FlowDirection="LeftToRight" IsItemsHost="true">
 
-                    </WrapPanel>
-                </ControlTemplate>
-            </ItemsControl.Template>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type model:Assignment}">
-                    <metro:Tile Title="{Binding Title}"
+                        </WrapPanel>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type model:Assignment}">
+                        <metro:Tile Title="{Binding Title}"
                                 Background="{DynamicResource AccentColorBrush2}"
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                                             AncestorType={x:Type UserControl}}, Path=DataContext.DetailsCommand}"
                                 CommandParameter="{Binding Id}">
-                        <Grid Width="Auto">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <metro:PackIconModern Grid.Row="0" Kind="ClipboardVariantEdit" 
+                            <Grid Width="Auto">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <metro:PackIconModern Grid.Row="0" Kind="ClipboardVariantEdit" 
                                                   HorizontalAlignment="Center" 
                                                   Width="48" Height="48"/>
-                            <TextBlock Grid.Row="1" Text="{Binding Unit.Title}"></TextBlock>
-                        </Grid>
-                    </metro:Tile>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                                <TextBlock Grid.Row="1" Text="{Binding Unit.Title}"></TextBlock>
+                            </Grid>
+                        </metro:Tile>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>

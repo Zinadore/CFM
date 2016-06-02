@@ -37,57 +37,58 @@
         <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Code, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
         <TextBlock Grid.Row="2" Grid.Column="0">Title</TextBlock>
         <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-
-        <Grid Grid.Row="4"
-              Grid.Column="0"
-              HorizontalAlignment="Stretch"
-              Grid.ColumnSpan="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <!--List Headers-->
-            <TextBlock Grid.Row="0" Grid.Column="0">All Professors</TextBlock>
-            <TextBlock Grid.Row="0" Grid.Column="2">Teaching this Unit</TextBlock>
-            <!--Existing Professors-->
-            <ListView Grid.Row="1"
+        <ScrollViewer Grid.Row="4"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="3">
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!--List Headers-->
+                <TextBlock Grid.Row="0" Grid.Column="0">All Professors</TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="2">Teaching this Unit</TextBlock>
+                <!--Existing Professors-->
+                <ListView Grid.Row="1"
                       Grid.Column="0"
                       Grid.RowSpan="3"
                       HorizontalAlignment="Stretch"
                       ItemsSource="{Binding Professors}"
                       SelectedItem="{Binding SelectedProfessor}">
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="{x:Type model:Professor}">
-                        <TextBlock Text="{Binding FullName}"></TextBlock>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <!--Unit Professors-->
-            <ListView Grid.Row="1"
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type model:Professor}">
+                            <TextBlock Text="{Binding FullName}"></TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <!--Unit Professors-->
+                <ListView Grid.Row="1"
                       Grid.Column="2"
                       Grid.RowSpan="3"
                       HorizontalAlignment="Stretch"
                       ItemsSource="{Binding Teachers}"
                       SelectedItem="{Binding SelectedTeacher}">
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="{x:Type model:Professor}">
-                        <TextBlock Text="{Binding FullName}"></TextBlock>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <StackPanel Grid.Row="2"
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type model:Professor}">
+                            <TextBlock Text="{Binding FullName}"></TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackPanel Grid.Row="2"
                         Grid.Column="1">
-                <Button Content="&gt;&gt;" Command="{Binding AddProfessorCommand}"></Button>
-                <Button Content="&lt;&lt;" Command="{Binding RemoveProfessorCommand}"></Button>
-            </StackPanel>
-        </Grid>
+                    <Button Content="&gt;&gt;" Command="{Binding AddProfessorCommand}"></Button>
+                    <Button Content="&lt;&lt;" Command="{Binding RemoveProfessorCommand}"></Button>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+        
         
         
         

@@ -64,26 +64,29 @@
                 </TextBox.Style>
             </TextBox>
         </Grid>
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding FilteredCollection}">
-            <ItemsControl.Template>
-                <ControlTemplate>
-                    <WrapPanel  Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
+        <ScrollViewer Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding FilteredCollection}">
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <WrapPanel  Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
                                     FlowDirection="LeftToRight" IsItemsHost="true">
-                        
-                    </WrapPanel>
-                </ControlTemplate>
-            </ItemsControl.Template>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type model:Professor}">
-                    <metro:Tile Title="{Binding FullName}"
+
+                        </WrapPanel>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type model:Professor}">
+                        <metro:Tile Title="{Binding FullName}"
                                 Background="{DynamicResource AccentColorBrush2}"
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, 
                                             AncestorType={x:Type UserControl}}, Path=DataContext.ProfessorDetailsCommand}"
                                 CommandParameter="{Binding Id}">
-                        <metro:PackIconModern Kind="People" />
-                    </metro:Tile>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                            <metro:PackIconModern Kind="People" />
+                        </metro:Tile>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        
     </Grid> 
 </UserControl>

@@ -64,7 +64,8 @@
                 </TextBox.Style>
             </TextBox>
         </Grid>
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding FilteredCollection}">
+        <ScrollViewer Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding FilteredCollection}">
             <ItemsControl.Template>
                 <ControlTemplate>
                     <WrapPanel  Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
@@ -92,5 +93,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        </ScrollViewer>
+        
     </Grid>
 </UserControl>

@@ -23,9 +23,12 @@
             <Button Height="35" Width="200"
                     Command="{Binding FeedbackCommand}"
                     Background="{StaticResource FeedbackColorBrush}">I got new Feedback!</Button>
-            <ComboBox ItemsSource="{Binding AllAssignments}" 
-                      DisplayMemberPath="Title" 
-                      SelectedItem="{Binding SelectedAssignment, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+            <ComboBox DisplayMemberPath="Title" 
+                      SelectedIndex="0"
+                      ItemsSource="{Binding AllAssignments}"
+                      SelectedItem="{Binding SelectedAssignment, UpdateSourceTrigger=PropertyChanged}">
+               
+            </ComboBox>
         </StackPanel>
         <Button Grid.Row="1" HorizontalAlignment="Center" 
                 Height="35" Width="200"
