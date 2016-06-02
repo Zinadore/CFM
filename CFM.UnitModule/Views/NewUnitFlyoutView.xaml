@@ -31,7 +31,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="3"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0">Code</TextBlock>
         <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Code, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
@@ -39,7 +39,8 @@
         <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         <ScrollViewer Grid.Row="4"
                       Grid.Column="0"
-                      Grid.ColumnSpan="3">
+                      Grid.ColumnSpan="3"
+                      MaxHeight="390">
             <Grid HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -88,11 +89,6 @@
                 </StackPanel>
             </Grid>
         </ScrollViewer>
-        
-        
-        
-        
-        
         <Button Command="{Binding SaveCommand}"
                 Grid.Row="5"
                 Grid.Column="2"
