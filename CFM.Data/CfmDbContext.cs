@@ -13,7 +13,7 @@ namespace CFM.Data
         public CfmDbContext()
             :base("name=cfmConnection")
         {
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CfmDbContext>());
+            Database.SetInitializer(new CreateDatabaseIfNotExists<CfmDbContext>());
             this.Configuration.LazyLoadingEnabled = false;
             this.Configuration.ProxyCreationEnabled = false;
         }
